@@ -8,6 +8,9 @@ import { ListItem, Link, Popup, BlockTitle, Page, List, Navbar, Block, Button, A
 import { useState } from 'react'
 import { useQueryWines } from '@/app/wine/queries'
 import { WineItem } from '@/app/wine/WineItem'
+import { useAtomValue } from 'jotai'
+import { userAtom } from '@/app/atoms'
+import { useRouter } from 'next/navigation'
 
 const schema = z.object({
   wine: z.object({ id: z.string() }),
@@ -20,58 +23,6 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 const resolver = zodResolver(schema)
-
-/*
-const WineSelectInput = ({ name }: { name: string }) => {
-  const { control } = useRemixFormContext()
-  const wines = useFetcher()
-
-  return (
-    <Controller
-      name={name}
-      control={control}
-      render={({ field, fieldState }) => (
-        <div className="w-72">
-          <Combobox value={field.value} onChange={field.onChange}>
-            <div className="relative mt-1">
-              <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
-                <Combobox.Input
-                  className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                  displayValue={(w: any) => w.name}
-                  onChange={e => wines.submit({ q: e.target.value }, { method: 'get', action: '/wine-search' })}
-                />
-                <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                  v
-                </Combobox.Button>
-              </div>
-              <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {wines.state === 'submitting' ?
-                  <div className="relative cursor-default select-none py-2 px-4 text-gray-700">Searching...</div>
-                  :
-                  wines.data?.error ?
-                    <div className="relative cursor-default select-none py-2 px-4 text-gray-700">Error failed to load wines</div>
-                    :
-                    (!wines.data?.length) ?
-                      <div className="relative cursor-default select-none py-2 px-4 text-gray-700">No wines found</div>
-                      :
-                      wines.data.map((w: any) => (
-                        <Combobox.Option
-                          key={w.id}
-                          value={w}
-                        >
-                          <span>{w.name}</span>
-                        </Combobox.Option>
-                      ))
-                }
-              </Combobox.Options>
-            </div>
-          </Combobox>
-        </div>
-      )}
-    />
-  )
-}
-*/
 
 const SelectWine = ({ name }: { name: string }) => {
   const { field, fieldState, formState } = useController({name})
@@ -155,13 +106,19 @@ const SelectInput = ({ name, options, label }: { name: string, label?: string, o
 
 export default function NewTastingRoute() {
   const methods = useForm()
+  const user = useAtomValue(userAtom)
+  const router = useRouter()
 
   const onSubmit = (data:any, e:any) => console.log(data, e);
   const onError = (errors:any, e:any) => console.log(errors, e);
 
+  if(!user?.username) {
+    router.push('/user/new?redirect=/tasting/new')
+    return <Page><Block>You need tell us your name before proceeding</Block></Page>
+  }
   return (
     <Page>
-      <Navbar title="New Tasting" />
+      <Navbar title="New Tasting" right={<span>{user.username}</span>} />
       <FormProvider {...methods}>
         <SelectWine name="wine" />
         <BlockTitle>Appearance</BlockTitle>

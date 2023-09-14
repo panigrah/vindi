@@ -1,5 +1,5 @@
 {
-  "name": "vindi-nextjs",
+  "name": "vindi",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,6 +13,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.23.5",
     "@hookform/resolvers": "^3.3.1",
     "@prisma/client": "5.3.0",
     "@tanstack/react-query": "^4.35.3",
@@ -23,6 +24,7 @@
     "autoprefixer": "^10.4.15",
     "eslint": "^8.49.0",
     "eslint-config-next": "^13.4.19",
+    "jotai": "^2.4.2",
     "konsta": "^3.0.1",
     "next": "^13.4.19",
     "postcss": "^8.4.29",

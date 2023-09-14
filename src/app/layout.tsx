@@ -1,11 +1,8 @@
-'use client';
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { App } from 'konsta/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-const queryClient = new QueryClient()
+import { ClerkProvider } from '@clerk/nextjs'
+import MainApp from './app'
 
 export default function RootLayout({
   children,
@@ -13,15 +10,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html>
-      <body>
-      <App theme="ios">
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
-      </App>
-      </body>
-    </html>
-    
+      <html>
+        <ClerkProvider>
+          <body>
+            <MainApp>
+              {children}
+            </MainApp>
+          </body>
+        </ClerkProvider>
+
+      </html>
   )
 }
