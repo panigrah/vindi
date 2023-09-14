@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation'
 import { useMutationAddTasting } from '../queries'
 import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
+import AromaInput from './aroma-input'
 
 const schema = z.object({
   wine: z.object({ id: z.string() }),
@@ -215,6 +216,9 @@ export default function NewTastingRoute() {
           <SelectInput name="readiness" options={options.readinessOptions} label="Readiness" />
           <ListButton onClick={methods.handleSubmit(onSubmit, onError)}>Save</ListButton>
         </List>
+        <Block inset strong>
+          <AromaInput />
+        </Block>
       </FormProvider>
     </Page>
   )
