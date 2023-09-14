@@ -1,8 +1,10 @@
 'use client'
-import { Page, Block, Preloader, Navbar, List, Link, ListItem } from 'konsta/react'
+import { Page, Block, Preloader, Navbar, List, ListItem } from 'konsta/react'
 import { useQueryWines } from './queries';
 import { WineItem } from './WineItem';
 import slugify from 'slugify';
+import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 export default function TastingsPage() {
 	const { data, isLoading, error } = useQueryWines()
@@ -11,8 +13,12 @@ export default function TastingsPage() {
 	return (
 		<Page>
 			<Navbar
-				left={<Link>Back</Link>}
-				right={<Link>Add</Link>}
+				left={<Link href="/"><ChevronLeftIcon className='w-5 h-5' /></Link>}
+				right={
+					<Link href="/wine/new">
+						Add
+					</Link>
+				}
 				title="Wines"
 			/>
 			{isLoading ?
@@ -24,7 +30,7 @@ export default function TastingsPage() {
 					{data?.length ?
 						data.map(w => <WineItem key={w.id} wine={w} />)
 						:
-						<ListItem link title="No tastings found - add one"></ListItem>
+						<ListItem link title="No wines found - add one"></ListItem>
 					}
 				</List>
 			}

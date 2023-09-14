@@ -4,6 +4,7 @@ import { Page, Block, Navbar, List, ListItem, Preloader } from 'konsta/react'
 import { TastingType, useQueryTastings } from './queries'
 import Link from 'next/link'
 import { ChevronLeftIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
+import { useRouter } from 'next/navigation'
 
 const TastingListItem = ({ tasting }: { tasting: TastingType }) => {
 	return (
@@ -17,6 +18,7 @@ const TastingListItem = ({ tasting }: { tasting: TastingType }) => {
 
 export default function TastingsPage() {
 	const { data, isLoading, error } = useQueryTastings()
+	const router = useRouter()
 
 	return (
 		<Page>
@@ -30,13 +32,15 @@ export default function TastingsPage() {
 				title="Tastings"
 			/>
 			{isLoading ?
-				<Preloader />
+				<Block className="text-center flex justify-center flex-col flex-auto w-full h-full">
+					<Preloader className="mx-auto" />
+				</Block>
 				:
 				<List inset outline strong dividers>
 					{data?.length ?
 						data.map(t => <TastingListItem tasting={t} key={t.id} />)
 						:
-						<ListItem link title="No tastings found - add one"></ListItem>
+						<ListItem link title="No tastings found - add one" onClick={ () => router.push('/tasting/new')}></ListItem>
 					}
 				</List>
 			}
