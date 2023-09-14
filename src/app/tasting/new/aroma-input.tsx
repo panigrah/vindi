@@ -1,8 +1,10 @@
 'use client'
-import { useEffect, useState } from 'react';
-import { PieChart } from 'react-minimal-pie-chart';
-import SunburstChart from 'sunburst-chart';
-import Sunburst from 'sunburst-chart'
+import { aromaWheel } from '@/selectOptions';
+import { useEffect, useMemo, useState } from 'react';
+//import { PieChart } from 'react-minimal-pie-chart';
+//import Sunburst from 'sunburst-chart'
+import { Block } from 'konsta/react'
+import * as d3 from 'd3'
 
 const colors = [
   '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 
@@ -16,56 +18,6 @@ const colors = [
 		  '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3', 
 		  '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
 
-const aromaWheel = [
-  { family: "root", name: "Fruity" },
-  { family: "Fruity", name: "Citrus" },
-  { family: "Fruity", name: "Berry" },
-  { family: "Fruity", name: "Tree Fruit" },
-  { family: "Fruity", name: "Tropical Fruit" },
-  { family: "Fruity", name: "Dried/Cooked Fruit" },
-  { family: "Fruity", name: "Other" },
-  { family: "root", name: "Herbacious" },
-  { family: "Herbacious", name: "Fresh" },
-  { family: "Herbacious", name: "Canned/Cooked" },
-  { family: "Herbacious", name: "Dried" },
-  { family: "root", name: "Nutty" },
-  { family: "Nutty", name: "Walnut" },
-  { family: "Nutty", name: "Hazelnut" },
-  { family: "Nutty", name: "Almond" },
-  { family: "root", name: "Caramel" },
-  { family: "Caramel", name: "Honey" },
-  { family: "Caramel", name: "Butterscotch" },
-  { family: "Caramel", name: "Butter" },
-  { family: "Caramel", name: "Soy Sauce" },
-  { family: "Caramel", name: "Chocolate" },
-  { family: "Caramel", name: "Molasses" },
-  { family: "Woody", name: "Resinous" },
-  { family: "Woody", name: "Phenolic" },
-  { family: "Woody", name: "Burned" },
-  { family: "root", name: "Earthy" },
-  { family: "Earthy", name: "Earthy" },
-  { family: "Earthy", name: "Moldy" },
-  { family: "root", name: "Chemical" },
-  { family: "Chemical", name: "Pungent" },
-  { family: "Chemical", name: "Sulphur" },
-  { family: "Chemical", name: "Petroleum" },
-  { family: "root", name: "Oxidized" },
-  { family: "Oxidized", name: "Sherry" },
-  { family: "root", name: "Microbiological" },
-  { family: "Microbiological", name: "Lactic" },
-  { family: "Microbiological", name: "Yeasty" },
-  { family: "Microbiological", name: "Other" },
-  { family: "root", name: "Floral" },
-  { family: "Floral", name: "Geranium" },
-  { family: "Floral", name: "Violet" },
-  { family: "Floral", name: "Rose" },
-  { family: "Floral", name: "Linalol (Earl Gray Tea)" },
-  { family: "Floral", name: "Orange Blossom" },
-  { family: "root", name: "Spicy" },
-  { family: "Spicy", name: "Licorice/Anise" },
-  { family: "Spicy", name: "Black Pepper" },
-  { family: "Spicy", name: "Clove" },
-]
 
 type EntryType = {
   name: string;
@@ -74,7 +26,7 @@ type EntryType = {
 }
 
 const getChildren = (name: string) => aromaWheel.filter(f => f.family === name).map( f => ({ name: f.name, value: 1, children: [] as EntryType[]}))
-
+/*
 const AromaInput2 = () => {
   useEffect(() => {
     //first level..
@@ -143,5 +95,86 @@ function AromaInput() {
     </>
   )
 }
+*/
 
-export default AromaInput2;
+const Arc = ({ arcData, onSelect, selected = false }: { arcData: any, onSelect: () => void, selected?:boolean }) => {
+  const arc = d3.arc().innerRadius(15 + (selected? 10: 0)).outerRadius(120 + (selected? 10: 0))
+  if(!arcData) return null
+  const d = arc(arcData)
+  if(!d) return null;
+  
+  return(
+    <>
+      <path
+        fill={colors[arcData.index]}
+        d={d}
+        stroke={selected? 'black': undefined}
+        strokeWidth={3}
+        onClick={() => onSelect()}
+      />
+    </>
+  )
+}
+
+const AromaInput = () => {
+  const [family, setFamily] = useState('root')
+  const [selected, setSelected] = useState('')
+  const pie = d3.pie()
+
+  const data = useMemo(() => aromaWheel
+    .filter(a => a.family === family)
+    .map((a, index, array) => ({
+      title: a.name,
+      value: aromaWheel.filter(f => f.family === a.name).length + 1,
+      color: colors[index],
+      extra: a,
+      valueOf: () => aromaWheel.filter(f => f.family === a.name).length + 1
+    }))
+    , [family])
+
+  const parent = aromaWheel.find(f => f.name === family)?.family
+  const select = (index: number) => {
+    //only set family if there are more children?
+    if( aromaWheel.filter(a => a.family === data[index].extra.name).length > 0)
+      setFamily(data[index].extra.name)
+    setSelected(data[index].extra.name)
+  }
+
+  return (
+    <Block strong inset>
+      <p>{family}</p>
+      <svg className='w-full aspect-square mx-auto mt-4'>
+        <g className='translate-x-[50%] translate-y-[50%]'>
+          { pie(data).map((d, index) => {
+            return <Arc arcData={d} key={index} onSelect={() => select(index)} selected={data[index].extra.name === selected} />
+          })} 
+           <circle 
+            cx={0} 
+            cy={0} 
+            r={15} 
+            className="fill-slate-100 dark:fill-slate-900" onClick={() => { if(parent) setFamily(parent)}} />
+          { pie(data).map((d, index) => {
+            const angle = (d.startAngle + d.endAngle)/2
+            const x = Math.cos(angle) * 25
+            const y = Math.sin(angle) * 25
+            const deg = (angle - Math.PI/2) / Math.PI * 180
+            return (
+              <g transform={`rotate(${deg})`} key={index}>
+                <g transform={`translate(45, 5)`}>
+                  <text 
+                    style={{stroke:'white', strokeWidth:'0.5em', fill:'black', paintOrder:'stroke', strokeLinejoin:'round'}}
+                    onClick={() => select(index)}
+                  >
+                    {data[index].extra.name}
+                  </text>
+                </g>
+              </g>
+            )
+          })} 
+         
+        </g>
+      </svg>
+    </Block>
+  )
+}
+export default AromaInput;
