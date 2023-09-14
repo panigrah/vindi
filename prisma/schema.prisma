@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Wine {
+  id  String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name  String
+  variety String
+  appelation  String
+  description String
+  varieties String
+  alcohol  Decimal
+  media String[]
+  year  Int
+  tastings Tasting[]
+}
+
+model User {
+  id String   @id @default(uuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  username     String   @unique
+  passwordHash String
+  tastings  Tasting[]
+}
+
+model Tasting {
+  id  String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean
+  location  String
+  wineId  String
+  wine  Wine @relation(fields: [wineId], references: [id], onDelete: Cascade)
+
+  reviewerId  String
+  reviewer  User @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  price  Decimal
+  currency  String
+  clarity   String
+  appearanceIntensity String
+  color  String
+  appearanceNotes String
+
+  condition String
+  noseIntensity String
+  aroma String
+  development String
+
+  sweetness String
+  acidity String
+  tannin  String
+  alocohol  String
+  body  String
+  flavorIntensity String
+  flavorNotes String
+  palateObservations String
+  finish String
+
+  quality  String
+  readiness String
+}
