@@ -6,12 +6,12 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
 }
 
 model Wine {
-  id  String @id @default(uuid())
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name  String
@@ -19,14 +19,14 @@ model Wine {
   appelation  String
   description String
   varieties String
-  alcohol  Decimal
+  alcohol  Float
   media String[]
   year  Int
   tastings Tasting[]
 }
 
 model User {
-  id String   @id @default(uuid())
+  id String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   username     String   @unique
@@ -35,7 +35,7 @@ model User {
 }
 
 model Tasting {
-  id  String @id @default(uuid())
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   published Boolean
@@ -46,7 +46,7 @@ model Tasting {
   reviewerId  String
   reviewer  User @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
 
-  price  Decimal
+  price  Float
   currency  String
   clarity   String
   appearanceIntensity String
