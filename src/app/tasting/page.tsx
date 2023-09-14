@@ -40,7 +40,7 @@ export default function TastingsPage() {
 					{data?.length ?
 						data.map(t => <TastingListItem tasting={t} key={t.id} />)
 						:
-						<ListItem link title="No tastings found - add one" onClick={ () => router.push('/tasting/new')}></ListItem>
+						<ListItem link title="No tastings found - add one" onClick={() => router.push('/tasting/new')}></ListItem>
 					}
 				</List>
 			}

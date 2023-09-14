@@ -7,7 +7,7 @@ export type WineType = {
   variety?: string;
   year: number;
   id?: string;
-  media?: string;
+  media?: string[];
 };
 
 export const useQueryWines = () =>

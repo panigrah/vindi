@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import TastingDetail from "./tasting-detail";
 import {PrismaClient} from '@prisma/client'
+import { nullsToUndefined } from "@/utils/nullHandler";
 const prisma = new PrismaClient()
 
 export default async function TastingPage({ params }: { params: { id: string }}) {
@@ -13,6 +14,6 @@ export default async function TastingPage({ params }: { params: { id: string }})
     return notFound()
   }
   return (
-     <TastingDetail tasting={tasting} />
+     <TastingDetail tasting={nullsToUndefined(tasting)} />
   )
 }
