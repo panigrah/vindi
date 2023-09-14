@@ -4,7 +4,7 @@ export type WineType = {
   name: string;
   appelation: string;
   description: string;
-  variety: string;
+  variety?: string;
   year: number;
   id?: string;
   media?: string;

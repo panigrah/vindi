@@ -4,13 +4,16 @@ import * as options from '@/selectOptions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from "zod"
 import { Controller, FormProvider, useController, useForm, useFormContext } from 'react-hook-form'
-import { ListItem, Link, Popup, BlockTitle, Page, List, Navbar, Block, Button, Actions, ActionsGroup, ActionsLabel, ActionsButton, ListInput, ListButton } from 'konsta/react'
+import { ListItem, Popup, BlockTitle, Page, List, Navbar, Block, Button, Actions, ActionsGroup, ActionsLabel, ActionsButton, ListInput, ListButton } from 'konsta/react'
 import { useState } from 'react'
 import { useQueryWines } from '@/app/wine/queries'
 import { WineItem } from '@/app/wine/WineItem'
 import { useAtomValue } from 'jotai'
 import { userAtom } from '@/app/atoms'
 import { useRouter } from 'next/navigation'
+import { useMutationAddTasting } from '../queries'
+import { ChevronLeftIcon } from '@heroicons/react/24/outline'
+import Link from 'next/link'
 
 const schema = z.object({
   wine: z.object({ id: z.string() }),
@@ -56,9 +59,9 @@ const SelectWine = ({ name }: { name: string }) => {
         <Navbar 
           title="Select a wine"
           right={
-            <Link navbar onClick={() => setOpen(false)}>
+            <Button navbar onClick={() => setOpen(false)}>
               Close
-            </Link>
+            </Button>
           }
         />
         <List strongIos insetIos>
@@ -105,32 +108,67 @@ const SelectInput = ({ name, options, label }: { name: string, label?: string, o
 }
 
 export default function NewTastingRoute() {
-  const methods = useForm()
+  const methods = useForm({
+    defaultValues: {
+      acidity: "n/a",
+      alcohol: "n/a",
+      body: "n/a",
+      clarity: "n/a",
+      color: "n/a",
+      condition: "n/a",
+      development: "n/a",
+      finish: "n/a",
+      flavorIntensity: "n/a",
+      appearanceIntensity: "n/a",
+      noseIntensity: "n/a",
+      quality: "n/a",
+      readiness: "n/a",
+      sweetness: "n/a",
+      tannin: "n/a",
+      appearanceNotes: "",
+      aromaDescription: "",
+      flavorCharacteristics: "",
+      otherCharacteristics: "",
+    }
+  })
   const user = useAtomValue(userAtom)
   const router = useRouter()
+  const mutation = useMutationAddTasting()
 
-  const onSubmit = (data:any, e:any) => console.log(data, e);
+  const onSubmit = (data:any, e:any) => {
+    mutation.mutate(data, {
+      onSuccess: (data) => {
+        router.replace(`/tasting/${data.id}`)
+      },
+      onError: (error) => {
+        console.log('cannot add tasting', error)
+      }
+    })
+  }
+
   const onError = (errors:any, e:any) => console.log(errors, e);
 
   if(!user?.username) {
     router.push('/user/new?redirect=/tasting/new')
-    return <Page><Block>You need tell us your name before proceeding</Block></Page>
+    return <Page><Block>Checking if you are logged in</Block></Page>
   }
+
   return (
     <Page>
-      <Navbar title="New Tasting" right={<span>{user.username}</span>} />
+      <Navbar left={<Link href="/tasting"><ChevronLeftIcon className="w-5 h-5" /></Link>} title="New Tasting" right={<span>{user.username}</span>} />
       <FormProvider {...methods}>
         <SelectWine name="wine" />
         <BlockTitle>Appearance</BlockTitle>
         <List strongIos insetIos>
           <SelectInput name="clarity" options={options.clarityOptions} label="Clarity" />
-          <SelectInput name="intensity" options={options.appearanceIntensityOptions} label="Intensity" />
+          <SelectInput name="appearanceIntensity" options={options.appearanceIntensityOptions} label="Intensity" />
           <SelectInput name="color" options={options.colorOptions} label="Color" />
           <ListInput 
             label="Appearance Notes"
             type="textarea"
             placeholder="Other notes on appearance"
             inputClassName="!h-20 resize-none"
+            {...methods.register('appearanceNotes')}
           />
         </List>
 
@@ -143,6 +181,7 @@ export default function NewTastingRoute() {
             type="textarea"
             placeholder="Aroma description"
             inputClassName="!h-20 resize-none"
+            {...methods.register('aromaDescription')}
           />
           <SelectInput name="development" options={options.developmentOptions} label="Development" />
         </List>
@@ -158,19 +197,21 @@ export default function NewTastingRoute() {
             label="Flavor Characteristics"
             type="textarea"
             placeholder="Additional Flavor Characteristics"
+            {...methods.register('flavorCharacteristics')}
           />
           <ListInput 
             label="Other Observations"
             type="textarea"
             placeholder="Any Other Characteristics"
             inputClassName="!h-20 resize-none"
+            {...methods.register('otherCharacteristics')}
           />
           <SelectInput name="finish" options={options.finishOptions} label="Finish" />
         </List>
 
         <BlockTitle>Conclusions</BlockTitle>
         <List strongIos insetIos >
-          <SelectInput name="qualityLevel" options={options.qualityLevelOptions} label="Quality Level" />
+          <SelectInput name="quality" options={options.qualityLevelOptions} label="Quality Level" />
           <SelectInput name="readiness" options={options.readinessOptions} label="Readiness" />
           <ListButton onClick={methods.handleSubmit(onSubmit, onError)}>Save</ListButton>
         </List>

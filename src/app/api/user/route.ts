@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const body = await request.json()
     const user = await prisma.user.upsert({ where: { username: body.username }, update: {}, create: { username: body.username, passwordHash: '' }})
     if(user.id) {
-      const token=JSON.stringify({name: user.username, id: user.id})
+      const token=JSON.stringify({username: user.username, id: user.id})
       cookies().set('token', token)
     }
     return NextResponse.json(user)

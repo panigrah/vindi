@@ -23,6 +23,7 @@ model Wine {
   media String[]
   year  Int
   tastings Tasting[]
+  addedBy String?
 }
 
 model User {
@@ -39,15 +40,16 @@ model Tasting {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   published Boolean
-  location  String
+  location  String?
   wineId  String
   wine  Wine @relation(fields: [wineId], references: [id], onDelete: Cascade)
 
   reviewerId  String
   reviewer  User @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
 
-  price  Float
-  currency  String
+  price  Float?
+  currency  String?
+
   clarity   String
   appearanceIntensity String
   color  String
@@ -55,17 +57,17 @@ model Tasting {
 
   condition String
   noseIntensity String
-  aroma String
+  aromaDescription String
   development String
 
   sweetness String
   acidity String
   tannin  String
-  alocohol  String
+  alcohol  String
   body  String
   flavorIntensity String
-  flavorNotes String
-  palateObservations String
+  flavorCharacteristics String
+  otherCharacteristics String
   finish String
 
   quality  String
