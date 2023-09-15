@@ -1,5 +1,5 @@
 'use client'
-import { Page, Navbar, List, ListItem, BlockTitle, Button } from "konsta/react";
+import { Page, Navbar, List, ListItem, BlockTitle, Block, Chip, Button } from "konsta/react";
 import { TastingType, useMutationDeleteTasting } from "../queries";
 import { WineItem } from "@/app/wine/WineItem";
 import { ChevronLeftIcon } from '@heroicons/react/24/solid'
@@ -55,6 +55,13 @@ export default function TastingDetail({ tasting }: { tasting: TastingType }) {
           <ListItem title={tasting.readiness} header="Readiness" />
         </List>
 
+        <Block strong inset>
+          {tasting.aromaDescriptors?.map( a => <Chip 
+                className="m-0.5"
+                key={a.name}
+                >{a.name}</Chip>)
+            }
+        </Block>
         <BlockTitle>Appearance</BlockTitle>
         <List inset strong outline dividers>
           <ListItem title={tasting.clarity} header="Clarity" />

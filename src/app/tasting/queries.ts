@@ -2,6 +2,12 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { WineType } from "../wine/queries";
 import { UserType } from "../user/queries";
 
+export type DescriptorType = {
+  name: string;
+  color?: string;
+  family: string;
+}
+
 export type TastingType = {
   id?: string;
   acidity?: string;
@@ -28,6 +34,7 @@ export type TastingType = {
   reviewerId?: string;
   wine?: WineType;
   reviewer?: UserType;
+  aromaDescriptors?: DescriptorType[]
 };
 
 export const useQueryTastings = () =>

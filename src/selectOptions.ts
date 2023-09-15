@@ -137,14 +137,12 @@ export const aromaTree = () => {
 
 export const aromaList = () => {  
   const averageColors = (aromaName: string) => {
-    console.log('averaging colors for: ', aromaName)
     const rgb = aromaWheel
       .filter(a => a.family === aromaName)
       .reduce( (prev, item,_, array) => {
         const color = item.color ? item.color : getColor(item.name)
         if(!color) return ({ r: 0, g: 0, b: 0})
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
-          console.log('rgb', color, result)
           if(result) {
             prev.r += parseInt(result[1], 16)/array.length
             prev.g += parseInt(result[2], 16)/array.length
