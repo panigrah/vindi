@@ -3,7 +3,7 @@ import { aromaWheel } from '@/selectOptions';
 import { useEffect, useMemo, useState } from 'react';
 //import { PieChart } from 'react-minimal-pie-chart';
 //import Sunburst from 'sunburst-chart'
-import { Block } from 'konsta/react'
+import { Block, BlockTitle, List, ListItem, Chip } from 'konsta/react'
 import * as d3 from 'd3'
 
 const colors = [
@@ -102,23 +102,45 @@ const Arc = ({ arcData, onSelect, selected = false }: { arcData: any, onSelect: 
   if(!arcData) return null
   const d = arc(arcData)
   if(!d) return null;
-  
+  console.log(arcData.data.color)
+  const d2 = d3.arc().innerRadius(125).outerRadius(135)(arcData)
+  const d4 = d3.arc().innerRadius(140).outerRadius(150)(arcData)
+
   return(
     <>
       <path
-        fill={colors[arcData.index]}
+        fill={ arcData.data.color || colors[arcData.index]}
         d={d}
-        stroke={selected? 'black': undefined}
-        strokeWidth={3}
+        className={selected? 'stroke-white dark:stroke-black' : ''}
+        strokeWidth={4}
         onClick={() => onSelect()}
       />
+      { d2 && 
+        <path
+          d={d2}
+          fill={ arcData.data.color || colors[arcData.index]}
+        />
+      }
+      { d4 && 
+        <path
+          d={d4}
+          fill={ arcData.data.color || colors[arcData.index]}
+        />
+      }
     </>
   )
+}
+
+type AromaType = {
+  name: string;
+  family: string;
+  color?: string;
 }
 
 const AromaInput = () => {
   const [family, setFamily] = useState('root')
   const [selected, setSelected] = useState('')
+  const [aromas, setAromas] = useState<AromaType[]>([])
   const pie = d3.pie()
 
   const data = useMemo(() => aromaWheel
@@ -126,7 +148,7 @@ const AromaInput = () => {
     .map((a, index, array) => ({
       title: a.name,
       value: aromaWheel.filter(f => f.family === a.name).length + 1,
-      color: colors[index],
+      color: a.color || colors[index],
       extra: a,
       valueOf: () => aromaWheel.filter(f => f.family === a.name).length + 1
     }))
@@ -137,12 +159,36 @@ const AromaInput = () => {
     //only set family if there are more children?
     if( aromaWheel.filter(a => a.family === data[index].extra.name).length > 0)
       setFamily(data[index].extra.name)
+    else {
+      if(!aromas.find(a => a.name === data[index].extra.name )) {
+        setAromas([...aromas, data[index].extra])
+      }
+    }
     setSelected(data[index].extra.name)
   }
 
   return (
-    <Block strong inset>
-      <p>{family}</p>
+    <>
+    <BlockTitle>What do you smell</BlockTitle>
+    <Block inset strong>
+      { aromas.length?
+          aromas.map(a =>  
+              <Chip
+                className="m-0.5"
+                key={a.name}
+                deleteButton
+                onDelete={() => {
+                  setAromas(aromas.filter( aroma => aroma.name !== a.name ))
+                }}
+              >
+                {a.name}
+              </Chip>
+          )
+        :
+          <p>Select a smell</p>
+      }
+    </Block>
+    <Block inset strong>
       <svg className='w-full aspect-square mx-auto mt-4'>
         <g className='translate-x-[50%] translate-y-[50%]'>
           { pie(data).map((d, index) => {
@@ -164,6 +210,7 @@ const AromaInput = () => {
                   <text 
                     style={{stroke:'white', strokeWidth:'0.5em', fill:'black', paintOrder:'stroke', strokeLinejoin:'round'}}
                     onClick={() => select(index)}
+                    transform={'scaleX(-1)'}
                   >
                     {data[index].extra.name}
                   </text>
@@ -171,10 +218,10 @@ const AromaInput = () => {
               </g>
             )
           })} 
-         
         </g>
       </svg>
     </Block>
+    </>    
   )
 }
 export default AromaInput;

@@ -216,9 +216,7 @@ export default function NewTastingRoute() {
           <SelectInput name="readiness" options={options.readinessOptions} label="Readiness" />
           <ListButton onClick={methods.handleSubmit(onSubmit, onError)}>Save</ListButton>
         </List>
-        <Block inset strong>
-          <AromaInput />
-        </Block>
+        <AromaInput />
       </FormProvider>
     </Page>
   )
