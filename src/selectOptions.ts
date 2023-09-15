@@ -115,6 +115,55 @@ export const readinessOptions = [
     {name: "Too Old"},
 ]
 
+type EntryType = {
+  name: string;
+  value: number;
+  color?: string;
+  children: EntryType[]
+}
+
+export const aromaTree = () => {
+  const aromas = aromaList()
+  const getChildren = (name: string) => aromas.filter(f => f.family === name).map( f => ({ name: f.name, color: f.color, value: 1, children: [] as EntryType[]}))
+  const data = {name: "root", children: getChildren('root')}
+  data.children.forEach(f => {
+    f.children.push(...getChildren(f.name))
+    f.children.forEach(c => {
+      c.children.push(...getChildren(c.name))
+    })
+  })
+  return data;
+}
+
+export const aromaList = () => {  
+  const averageColors = (aromaName: string) => {
+    console.log('averaging colors for: ', aromaName)
+    const rgb = aromaWheel
+      .filter(a => a.family === aromaName)
+      .reduce( (prev, item,_, array) => {
+        const color = item.color ? item.color : getColor(item.name)
+        if(!color) return ({ r: 0, g: 0, b: 0})
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
+          console.log('rgb', color, result)
+          if(result) {
+            prev.r += parseInt(result[1], 16)/array.length
+            prev.g += parseInt(result[2], 16)/array.length
+            prev.b += parseInt(result[3], 16)/array.length
+          }
+          return prev
+        }, {r: 0, g: 0, b: 0})
+    return "#" + (1 << 24 | rgb.r << 16 | rgb.g << 8 | rgb.b).toString(16).slice(1);
+  }
+
+  const getColor = (aromaName: string) => {
+    if(aromaWheel.find(a => a.name == aromaName)?.color) {
+      return aromaWheel.find(a => a.name == aromaName)?.color
+    }
+    //calculate average of the colors of each of the children..
+    return averageColors(aromaName)
+  }
+  return aromaWheel.map(aroma => ({ ...aroma, color: getColor(aroma.name)}))
+}
 
 export const aromaWheel = [
     { family: "root", name: "Fruity", color: ""},
@@ -257,3 +306,14 @@ export const aromaWheel = [
       { family: "Spicy", name: "Clove", color: "#876155"},
   ]
   
+  export const colorList = [
+    '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 
+        '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+        '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A', 
+        '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+        '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC', 
+        '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+        '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680', 
+        '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
+        '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3', 
+        '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];

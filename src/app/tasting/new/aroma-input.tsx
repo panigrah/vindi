@@ -1,24 +1,13 @@
 'use client'
-import { aromaWheel } from '@/selectOptions';
+import { aromaList, colorList } from '@/selectOptions';
 import { useEffect, useMemo, useState } from 'react';
 //import { PieChart } from 'react-minimal-pie-chart';
 //import Sunburst from 'sunburst-chart'
 import { Block, BlockTitle, List, ListItem, Chip } from 'konsta/react'
 import * as d3 from 'd3'
+import { useController } from 'react-hook-form';
 
-const colors = [
-  '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 
-		  '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
-		  '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A', 
-		  '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
-		  '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC', 
-		  '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
-		  '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680', 
-		  '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
-		  '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3', 
-		  '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
-
-
+/*
 type EntryType = {
   name: string;
   value: number;
@@ -26,7 +15,7 @@ type EntryType = {
 }
 
 const getChildren = (name: string) => aromaWheel.filter(f => f.family === name).map( f => ({ name: f.name, value: 1, children: [] as EntryType[]}))
-/*
+
 const AromaInput2 = () => {
   useEffect(() => {
     //first level..
@@ -102,14 +91,12 @@ const Arc = ({ arcData, onSelect, selected = false }: { arcData: any, onSelect: 
   if(!arcData) return null
   const d = arc(arcData)
   if(!d) return null;
-  console.log(arcData.data.color)
   const d2 = d3.arc().innerRadius(125).outerRadius(135)(arcData)
-  const d4 = d3.arc().innerRadius(140).outerRadius(150)(arcData)
 
   return(
     <>
       <path
-        fill={ arcData.data.color || colors[arcData.index]}
+        fill={arcData.data.color}
         d={d}
         className={selected? 'stroke-white dark:stroke-black' : ''}
         strokeWidth={4}
@@ -118,13 +105,7 @@ const Arc = ({ arcData, onSelect, selected = false }: { arcData: any, onSelect: 
       { d2 && 
         <path
           d={d2}
-          fill={ arcData.data.color || colors[arcData.index]}
-        />
-      }
-      { d4 && 
-        <path
-          d={d4}
-          fill={ arcData.data.color || colors[arcData.index]}
+          fill={arcData.data.color}
         />
       }
     </>
@@ -137,23 +118,31 @@ type AromaType = {
   color?: string;
 }
 
-const AromaInput = () => {
+const AromaInput = ({name, label}: { name: string, label: string}) => {
+  const { field, fieldState, formState } = useController({name})
   const [family, setFamily] = useState('root')
   const [percentVisible, setPercentVisible] = useState(0)
   const [selected, setSelected] = useState('')
-  const [aromas, setAromas] = useState<AromaType[]>([])
+  //const [aromas, setAromas] = useState<AromaType[]>([])
   const pie = d3.pie().startAngle(0).endAngle(percentVisible * Math.PI)
-
-  const data = useMemo(() => aromaWheel
-    .filter(a => a.family === family)
-    .map((a, index, array) => ({
-      title: a.name,
-      value: aromaWheel.filter(f => f.family === a.name).length + 1,
-      color: a.color || colors[index],
-      extra: a,
-      valueOf: () => aromaWheel.filter(f => f.family === a.name).length + 1
-    }))
-    , [family])
+  
+  const aromas = field.value as AromaType[]
+  const setAromas = (values: AromaType[]) => {
+    field.onChange(values)
+  }
+  const aromaDictionary = useMemo(() => aromaList(), [])
+  //console.log(aromaDictionary)
+  const data = useMemo(() => 
+    aromaDictionary
+      .filter(a => a.family === family)
+      .map((a, index, array) => ({
+        title: a.name,
+        value: aromaDictionary.filter(f => f.family === a.name).length + 1,
+        color: a.color || colorList[index],
+        extra: a,
+        valueOf: () => aromaDictionary.filter(f => f.family === a.name).length + 1
+      }))
+      , [family, aromaDictionary])
 
     useEffect(() => {
       d3.selection()
@@ -166,10 +155,10 @@ const AromaInput = () => {
         })
     }, [data])
 
-  const parent = aromaWheel.find(f => f.name === family)?.family
+  const parent = aromaDictionary.find(f => f.name === family)?.family
   const select = (index: number) => {
     //only set family if there are more children?
-    if( aromaWheel.filter(a => a.family === data[index].extra.name).length > 0)
+    if( aromaDictionary.filter(a => a.family === data[index].extra.name).length > 0)
       setFamily(data[index].extra.name)
     else {
       if(!aromas.find(a => a.name === data[index].extra.name )) {

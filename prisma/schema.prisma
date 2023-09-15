@@ -72,4 +72,11 @@ model Tasting {
 
   quality  String
   readiness String
+  aromaDescriptors AromaDescriptor[]
+}
+
+type AromaDescriptor {
+  name String
+  color String?
+  family String
 }

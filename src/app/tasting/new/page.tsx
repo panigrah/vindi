@@ -4,7 +4,7 @@ import * as options from '@/selectOptions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from "zod"
 import { Controller, FormProvider, useController, useForm, useFormContext } from 'react-hook-form'
-import { ListItem, Popup, BlockTitle, Page, List, Navbar, Block, Button, Actions, ActionsGroup, ActionsLabel, ActionsButton, ListInput, ListButton } from 'konsta/react'
+import { ListItem, Popup, BlockTitle, Page, List, Navbar, Block, Button, Actions, ActionsGroup, ActionsLabel, ActionsButton, ListInput, ListButton, Notification } from 'konsta/react'
 import { useState } from 'react'
 import { useQueryWines } from '@/app/wine/queries'
 import { WineItem } from '@/app/wine/WineItem'
@@ -22,7 +22,8 @@ const schema = z.object({
   appearanceNotes: z.string(),
   aromaDescription: z.string(),
   flavorCharacteristics: z.string(),
-  otherObservations: z.string()
+  otherObservations: z.string(),
+  acidity: z.string(),
 })
 
 type FormData = z.infer<typeof schema>
@@ -109,6 +110,7 @@ const SelectInput = ({ name, options, label }: { name: string, label?: string, o
 }
 
 export default function NewTastingRoute() {
+  const [openNotification, setNotification] = useState(false)
   const methods = useForm({
     defaultValues: {
       acidity: "n/a",
@@ -130,6 +132,7 @@ export default function NewTastingRoute() {
       aromaDescription: "",
       flavorCharacteristics: "",
       otherCharacteristics: "",
+      aromaDescriptors: []
     }
   })
   const user = useAtomValue(userAtom)
@@ -137,6 +140,10 @@ export default function NewTastingRoute() {
   const mutation = useMutationAddTasting()
 
   const onSubmit = (data:any, e:any) => {
+    if( !data.wine?.id ) {
+      setNotification(true)
+      return;
+    }
     mutation.mutate(data, {
       onSuccess: (data) => {
         router.replace(`/tasting/${data.id}`)
@@ -157,6 +164,12 @@ export default function NewTastingRoute() {
   return (
     <Page>
       <Navbar left={<Link href="/tasting"><ChevronLeftIcon className="w-5 h-5" /></Link>} title="New Tasting" right={<span>{user.username}</span>} />
+      <Notification
+        opened={openNotification}
+        title={'Please update'}
+        onClick={() => setNotification(false)}
+        subtitle={'Please select a wine to proceed'}
+      />
       <FormProvider {...methods}>
         <SelectWine name="wine" />
         <BlockTitle>Appearance</BlockTitle>
@@ -186,6 +199,7 @@ export default function NewTastingRoute() {
           />
           <SelectInput name="development" options={options.developmentOptions} label="Development" />
         </List>
+        <AromaInput name="aromaDescriptors" label="Aromas" />
         <BlockTitle>Palete</BlockTitle>
         <List strongIos insetIos >
           <SelectInput name="sweetness" options={options.sweetnessOptions} label="Sweetness" />
@@ -216,7 +230,6 @@ export default function NewTastingRoute() {
           <SelectInput name="readiness" options={options.readinessOptions} label="Readiness" />
           <ListButton onClick={methods.handleSubmit(onSubmit, onError)}>Save</ListButton>
         </List>
-        <AromaInput />
       </FormProvider>
     </Page>
   )
