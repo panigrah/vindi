@@ -139,9 +139,10 @@ type AromaType = {
 
 const AromaInput = () => {
   const [family, setFamily] = useState('root')
+  const [percentVisible, setPercentVisible] = useState(0)
   const [selected, setSelected] = useState('')
   const [aromas, setAromas] = useState<AromaType[]>([])
-  const pie = d3.pie()
+  const pie = d3.pie().startAngle(0).endAngle(percentVisible * Math.PI)
 
   const data = useMemo(() => aromaWheel
     .filter(a => a.family === family)
@@ -153,6 +154,17 @@ const AromaInput = () => {
       valueOf: () => aromaWheel.filter(f => f.family === a.name).length + 1
     }))
     , [family])
+
+    useEffect(() => {
+      d3.selection()
+        .transition('pie-reveal')
+        .duration(3000)
+        .ease(d3.easeSinInOut)
+        .tween('percentVisible', () => {
+          const percentInterpolate = d3.interpolate(0, 100)
+          return t => setPercentVisible(percentInterpolate(t))
+        })
+    }, [data])
 
   const parent = aromaWheel.find(f => f.name === family)?.family
   const select = (index: number) => {
@@ -192,7 +204,12 @@ const AromaInput = () => {
       <svg className='w-full aspect-square mx-auto mt-4'>
         <g className='translate-x-[50%] translate-y-[50%]'>
           { pie(data).map((d, index) => {
-            return <Arc arcData={d} key={index} onSelect={() => select(index)} selected={data[index].extra.name === selected} />
+            return <Arc 
+                      arcData={{...d}} 
+                      key={index} 
+                      onSelect={() => select(index)} 
+                      selected={data[index].extra.name === selected} 
+                    />
           })} 
            <circle 
             cx={0} 
