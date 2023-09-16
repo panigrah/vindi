@@ -7,6 +7,8 @@ import { ChevronLeftIcon } from '@heroicons/react/24/solid'
 import Link from "next/link";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import { useMemo } from "react";
+import { aromaList } from "@/selectOptions";
 
 type UserType = {
   username: string;
@@ -24,6 +26,8 @@ const UserItem = ({ user }: { user: UserType }) => {
 export default function TastingDetail({ tasting }: { tasting: TastingType }) {
   const deleteMutation = useMutationDeleteTasting()
   const router = useRouter()
+
+  const aromas = useMemo(() => aromaList(), [])
 
   const deleteTasting = () => {
     deleteMutation.mutate(tasting.id!, { 
@@ -55,11 +59,14 @@ export default function TastingDetail({ tasting }: { tasting: TastingType }) {
           <ListItem title={tasting.readiness} header="Readiness" />
         </List>
 
+        <BlockTitle>Aroma Descriptors</BlockTitle>
         <Block strong inset>
           {tasting.aromaDescriptors?.map( a => <Chip 
-                className="m-0.5"
-                key={a.name}
-                >{a.name}</Chip>)
+            media={
+            <img className="ios:h-7 material:h-6 rounded-full" src={aromas.find(aroma => aroma.name === a.name)?.media ?? ''} />}
+              className="m-0.5"
+              key={a.name}
+              >{a.name}</Chip>)
             }
         </Block>
         <BlockTitle>Appearance</BlockTitle>

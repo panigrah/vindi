@@ -1,3 +1,5 @@
+import slugify from "slugify"
+
 export const clarityOptions = [
     {name: "Clear"},
     {name: "Hazy", color: ""}
@@ -135,6 +137,11 @@ export const aromaTree = () => {
   return data;
 }
 
+const mediaFilePath = (aromaName: string) => {
+  const slug = slugify(aromaName, { lower: true, strict: true, trim: true})
+  return `/aromas/${slug}.png`
+}
+
 export const aromaList = () => {  
   const averageColors = (aromaName: string) => {
     const rgb = aromaWheel
@@ -160,7 +167,7 @@ export const aromaList = () => {
     //calculate average of the colors of each of the children..
     return averageColors(aromaName)
   }
-  return aromaWheel.map(aroma => ({ ...aroma, color: getColor(aroma.name)}))
+  return aromaWheel.map(aroma => ({ ...aroma, color: getColor(aroma.name), media: mediaFilePath(aroma.name)}))
 }
 
 export const aromaWheel = [
@@ -197,21 +204,21 @@ export const aromaWheel = [
       { family: "Other fruity", name: "Artificial Fruit", color: "#538B45"},
       { family: "Other fruity", name: "Methyl Anthranilate (foxy)", color: "#f595f6"},
   
-    { family: "root", name: "Herbacious", color: ""},
-    { family: "Herbacious", name: "Fresh", color: ""},
+    { family: "root", name: "Herbaceous", color: ""},
+    { family: "Herbaceous", name: "Fresh", color: ""},
       { family: "Fresh", name: "Cut Green grass", color: "#558367"},
       { family: "Fresh", name: "Bell Pepper", color: "#4E6314"},
       { family: "Fresh", name: "Equalyptus", color: "#5F8575"},
       { family: "Fresh", name: "Mint", color: "#009E6D"},
   
-    { family: "Herbacious", name: "Canned/Cooked", color: ""},
+    { family: "Herbaceous", name: "Canned/Cooked", color: ""},
       { family: "Canned/Cooked", name: "Green bean", color: "#A98B42"},
       { family: "Canned/Cooked", name: "Asparagus", color: "#87A96B"},
       { family: "Canned/Cooked", name: "Green olive", color: "#8D8B55"},
       { family: "Canned/Cooked", name: "Black olive", color: "#3C3D36"},
       { family: "Canned/Cooked", name: "Artichoke", color: "#8F9779"},
   
-    { family: "Herbacious", name: "Dried", color: ""},
+    { family: "Herbaceous", name: "Dried", color: ""},
       { family: "Dried", name: "Hay/Straw", color: "#C2A770"},
       { family: "Dried", name: "Tea", color: "#4C1208"},
   

@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "tool1": "ts-node tools/filematch.ts",
+    "tool2": "ts-node tools/makepng.ts"
+
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -28,6 +31,7 @@
     "d3": "^7.8.5",
     "eslint": "^8.49.0",
     "eslint-config-next": "^13.4.19",
+    "fuse.js": "^6.6.2",
     "jotai": "^2.4.2",
     "konsta": "^3.0.1",
     "next": "^13.4.19",
@@ -44,7 +48,9 @@
   },
   "devDependencies": {
     "prisma": "^5.3.0",
+    "sharp": "^0.32.5",
     "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "webp-converter": "^2.3.3"
   }
 }
