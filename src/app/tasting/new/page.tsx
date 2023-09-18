@@ -88,6 +88,26 @@ const SelectWine = ({ name }: { name: string }) => {
   )
 }
 
+const InputWizard = ({ name, title }: { name: string, title: string }) => {
+  const { field } = useController({name})
+  const [open, setOpen] = useState(false)
+  return(
+    <>
+      <ListItem header={title} title={field.value} link onClick={() => setOpen(true)} />
+      <Actions
+        opened={open}
+        onBackdropClick={() => setOpen(false)}
+      >
+        <ActionsGroup>
+          <ActionsLabel>{title}</ActionsLabel>
+          <ActionsButton>Clear</ActionsButton>
+          <ActionsButton>Hazy</ActionsButton>
+        </ActionsGroup>
+      </Actions>
+    </>
+  )
+}
+
 const SelectInput = ({ name, options, label }: { name: string, label?: string, options: { name: string }[] }) => {
   const { field, fieldState, formState } = useController({name: name})
   return (
@@ -175,6 +195,7 @@ export default function NewTastingRoute() {
         <BlockTitle>Appearance</BlockTitle>
         <List strongIos insetIos>
           <SelectInput name="clarity" options={options.clarityOptions} label="Clarity" />
+          <InputWizard name="clartiy" title='Clarity' />
           <SelectInput name="appearanceIntensity" options={options.appearanceIntensityOptions} label="Intensity" />
           <SelectInput name="color" options={options.colorOptions} label="Color" />
           <ListInput 
@@ -189,7 +210,7 @@ export default function NewTastingRoute() {
         <BlockTitle>Nose</BlockTitle>
         <List strongIos insetIos >
           <SelectInput name="condition" options={options.conditionOptions} label="Condition" />
-          <SelectInput name="noseIntensity" options={options.noseIntesityOptions} label="Intensity" />
+          <SelectInput name="noseIntensity" options={options.noseIntensityOptions} label="Intensity" />
           <ListInput 
             label="Aroma"
             type="textarea"

@@ -12,3 +12,4 @@ type UserType = {
 }
 
 export const userAtom = atom<UserType | null>(null)
+export const tastingListAtom = atom<string[]>([])

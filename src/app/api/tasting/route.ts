@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-
-const prisma = new PrismaClient()
+import prisma from '@/utils/db'
 
 const getUser = async () => {
   const token = cookies().get('token')?.value

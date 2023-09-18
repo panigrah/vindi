@@ -12,18 +12,18 @@ export const appearanceIntensityOptions = [
 ]
 
 export const colorOptions = [
-    {name: "Lemon Green"},
-    {name: "Lemon"},
-    {name: "Gold"},
-    {name: "Amber"},
-    {name: "Brown"},
-    {name: "Pink"},
-    {name: "Salmon"},
-    {name: "Orange"},
-    {name: "Purple"},
-    {name: "Ruby"},
-    {name: "Garnet"},
-    {name: "Tawney"},
+    {name: "Lemon Green", color: "#ADF802"},
+    {name: "Lemon", color: "#FAFA33"},
+    {name: "Gold", color: "#FFD700"},
+    {name: "Amber", color: "#FFBF00" },
+    {name: "Brown", color: "#964B00"},
+    {name: "Pink", color: "#FFC0CB"},
+    {name: "Salmon", color: "#fa8072"},
+    {name: "Orange", color: "#FFA500"},
+    {name: "Purple", color: "#800080"},
+    {name: "Ruby", color: "#E0115F"},
+    {name: "Garnet", color: "#733635"},
+    {name: "Tawney", color: "#643a48"},
 ]
 
 export const conditionOptions = [
@@ -31,7 +31,7 @@ export const conditionOptions = [
     {name: "Unclean (faulty)"}
 ]
 
-export const noseIntesityOptions = [
+export const noseIntensityOptions = [
     {name: "Light"},
     {name: "Medium-"},
     {name: "Medium"},
