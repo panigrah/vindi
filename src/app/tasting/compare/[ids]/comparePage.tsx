@@ -1,7 +1,7 @@
 'use client';
 import { Page, Block, BlockTitle, Chip, Navbar } from 'konsta/react'
 import { TastingType } from '../../queries';
-import { colorOptions, noseIntensityOptions } from '@/selectOptions';
+import { acidityOptions, alcoholOptions, bodyOptions, colorOptions, developmentOptions, finishOptions, flavorIntensityOptions, noseIntensityOptions, sweetnessOptions, tanninOptions } from '@/selectOptions';
 import Link from 'next/link';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 
@@ -23,18 +23,38 @@ function IntensityValue(intensity?: string) {
   }
 }
 
+
 const CircleProgress = ({ percentage, color, width }: { percentage: number, color: string, width: number }) => {
   const r = 70
   const strokeCircum = 2 * 3.1415 * r;
-  const strokeOffset = 2 * 3.1415 * r * percentage;
+  const strokeOffset = percentage == 1? 0: 2 * 3.1415 * r * (1-percentage);
   return <svg width={width} height={width} viewBox="0 0 180 180">
-      <g transform="translate(90,90)" stroke="#000" stroke-width="0">
+      <g transform="translate(90,90)" stroke="#000" strokeWidth="0">
         <g transform='rotate(-90)'>
-          <circle r={r} cx="0" cy="0" fill="transparent" stroke="#e0e0e0" stroke-width="36px"></circle>
-          <circle r={r} cx="0" cy="0" fill="transparent" stroke={color} stroke-width="36px" stroke-dasharray={`${strokeCircum}px`} stroke-dashoffset={`${strokeOffset}px`}></circle>
+          <circle r={r} cx="0" cy="0" fill="transparent" stroke="#e0e0e0" strokeWidth="36px"></circle>
+          <circle r={r} cx="0" cy="0" fill="transparent" stroke={color} strokeWidth="36px" strokeDasharray={`${strokeCircum}px`} strokeDashoffset={`${strokeOffset}px`}></circle>
         </g>
       </g>
     </svg> 
+}
+
+function DevelopmentValue(development?: string) {
+  const index = developmentOptions.findIndex(c => c.name === development);
+  if( index >= 0) {
+    return (<CircleProgress percentage={(index + 1)/developmentOptions.length} color="#ff0000" width={24} />)
+  } else {
+    return <div>"n/a"</div>
+  }
+}
+
+function OptionValue(options: {name: string}[], value?: string) {
+  const index = options.findIndex(c => c.name === value);
+  if( index >= 0) {
+    console.log(value, options, index)
+    return (<CircleProgress percentage={(index + 1)/options.length} color="#ff0000" width={24} />)
+  } else {
+    return <div>"n/a"</div>
+  }
 }
 
 function NoseIntensityValue(intensity?: string) {
@@ -75,7 +95,7 @@ export default function ComparePage({ tastings }: { tastings: any[]}) {
               <div key={item.id} className='text-center flex items-center flex-col'>
                 <img src={item.wine!.media?.[0]} width={48} height={48}/>
                 <div className='whitespace-break-spaces'>
-                  {item.wine!.name}
+                  <Link href={`/tasting/${item.id}`}>{item.wine!.name}</Link>
                 </div>
               </div>)} 
             />
@@ -117,7 +137,7 @@ export default function ComparePage({ tastings }: { tastings: any[]}) {
           <CompareItemRow 
             label='Development' 
             items={tastings} 
-            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{item.development}</div>} 
+            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{DevelopmentValue(item.development)}</div>} 
           />
           <CompareItemRow 
             label='Aromas' 
@@ -132,37 +152,37 @@ export default function ComparePage({ tastings }: { tastings: any[]}) {
           <CompareItemRow 
             label='Sweetness' 
             items={tastings} 
-            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{item.sweetness}</div>} 
+            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{OptionValue(sweetnessOptions, item.sweetness)}</div>} 
           />
           <CompareItemRow 
             label='Acidity' 
             items={tastings} 
-            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{item.acidity}</div>} 
+            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{OptionValue(acidityOptions, item.acidity)}</div>} 
           />
           <CompareItemRow 
             label='Tannin' 
             items={tastings} 
-            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{item.tannin}</div>} 
+            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{OptionValue(tanninOptions, item.tannin)}</div>} 
           />
           <CompareItemRow 
             label='Alcohol' 
             items={tastings} 
-            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{item.alcohol}</div>} 
+            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{OptionValue(alcoholOptions, item.alcohol)}</div>} 
           />
           <CompareItemRow 
             label='Body' 
             items={tastings} 
-            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{item.body}</div>} 
+            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{OptionValue(bodyOptions, item.body)}</div>} 
           />
           <CompareItemRow 
             label='Flavor Intensity' 
             items={tastings} 
-            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{item.flavorIntensity}</div>} 
+            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{OptionValue(flavorIntensityOptions, item.flavorIntensity)}</div>} 
           />
           <CompareItemRow 
             label='Finish' 
             items={tastings} 
-            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{item.finish}</div>} 
+            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{OptionValue(finishOptions, item.finish)}</div>} 
           />
         </table>
       </Block>
