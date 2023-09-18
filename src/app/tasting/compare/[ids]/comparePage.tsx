@@ -1,7 +1,7 @@
 'use client';
 import { Page, Block, BlockTitle, Chip, Navbar } from 'konsta/react'
 import { TastingType } from '../../queries';
-import { acidityOptions, alcoholOptions, bodyOptions, colorOptions, developmentOptions, finishOptions, flavorIntensityOptions, noseIntensityOptions, sweetnessOptions, tanninOptions } from '@/selectOptions';
+import { acidityOptions, alcoholOptions, appearanceIntensityOptions, bodyOptions, colorOptions, developmentOptions, finishOptions, flavorIntensityOptions, noseIntensityOptions, sweetnessOptions, tanninOptions } from '@/selectOptions';
 import Link from 'next/link';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 
@@ -13,16 +13,6 @@ function CompareItemRow<T extends { id: string }>({ label, items, render }: { la
     </tr>
   )
 }
-
-function IntensityValue(intensity?: string) {
-  const intensities = ['Pale', 'Medium', 'Deep']
-  if(intensity && intensity !== 'N/A') {
-    return intensities.findIndex(i => i === intensity)
-  } else {
-    return "N/A"
-  }
-}
-
 
 const CircleProgress = ({ percentage, color, width }: { percentage: number, color: string, width: number }) => {
   const r = 70
@@ -38,14 +28,6 @@ const CircleProgress = ({ percentage, color, width }: { percentage: number, colo
     </svg> 
 }
 
-function DevelopmentValue(development?: string) {
-  const index = developmentOptions.findIndex(c => c.name === development);
-  if( index >= 0) {
-    return (<CircleProgress percentage={(index + 1)/developmentOptions.length} color="#ff0000" width={24} />)
-  } else {
-    return <div>"n/a"</div>
-  }
-}
 
 function OptionValue(options: {name: string}[], value?: string) {
   const index = options.findIndex(c => c.name === value);
@@ -53,25 +35,14 @@ function OptionValue(options: {name: string}[], value?: string) {
     console.log(value, options, index)
     return (<CircleProgress percentage={(index + 1)/options.length} color="#ff0000" width={24} />)
   } else {
-    return <div>"n/a"</div>
-  }
-}
-
-function NoseIntensityValue(intensity?: string) {
-  const index = noseIntensityOptions.findIndex(c => c.name === intensity)
-
-  if(index >= 0) {
-    //return <div className='w-6 h-6 rounded-full bg-slate-300' />
-    return (<CircleProgress percentage={(index + 1)/5} color="#ff0000" width={24} />)
-  } else {
-    return null;
+    return <div>n/a</div>
   }
 }
 
 function ColorValue(color?: string) {
   const colorOption = colorOptions.find(c => c.name === color)
   if( colorOption ) {
-    return(<div className='w-6 h-6 rounded-full' style={{backgroundColor: colorOption.color}} />)
+    return(<div className="w-6 h-6 rounded-full" style={{backgroundColor: colorOption.color}} />)
   } else {
     return <div>n/a</div>
   }
@@ -112,7 +83,7 @@ export default function ComparePage({ tastings }: { tastings: any[]}) {
           <CompareItemRow 
             label='Intensity' 
             items={tastings} 
-            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{IntensityValue(item.appearanceIntensity)}</div>} 
+            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{OptionValue(appearanceIntensityOptions, item.appearanceIntensity)}</div>} 
           />
           <CompareItemRow 
             label='Color' 
@@ -132,12 +103,12 @@ export default function ComparePage({ tastings }: { tastings: any[]}) {
           <CompareItemRow 
             label='Intensity' 
             items={tastings} 
-            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{NoseIntensityValue(item.noseIntensity)}</div>} 
+            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{OptionValue(noseIntensityOptions, item.noseIntensity)}</div>} 
           />
           <CompareItemRow 
             label='Development' 
             items={tastings} 
-            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{DevelopmentValue(item.development)}</div>} 
+            render={(item: TastingType) => <div className='flex flex-auto w-full justify-center'>{OptionValue(developmentOptions, item.development)}</div>} 
           />
           <CompareItemRow 
             label='Aromas' 
