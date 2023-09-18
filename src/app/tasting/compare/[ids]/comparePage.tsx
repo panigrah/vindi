@@ -5,11 +5,11 @@ import { colorOptions, noseIntensityOptions } from '@/selectOptions';
 import Link from 'next/link';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 
-function CompareItemRow<T>({ label, items, render }: { label: string, items: T[], render: (row:T) => JSX.Element  }) {
+function CompareItemRow<T extends { id: string }>({ label, items, render }: { label: string, items: T[], render: (row:T) => JSX.Element  }) {
   return(
     <tr className='border-b border-slate-100 dark:border-slate-800'>
       <td className='font-semibold py-3 px-1'>{label}</td>
-      {items.map(v => <td>{render(v)}</td>)}
+      {items.map(v => <td key={v.id}>{render(v)}</td>)}
     </tr>
   )
 }
@@ -122,7 +122,7 @@ export default function ComparePage({ tastings }: { tastings: any[]}) {
           <CompareItemRow 
             label='Aromas' 
             items={tastings} 
-            render={(item: TastingType) => <div className='flex flex-row flex-wrap justify-center'>{item.aromaDescriptors?.map(a => <Chip className="m-0.5 truncate">{a.name}</Chip>)}</div>} 
+            render={(item: TastingType) => <div className='flex flex-row flex-wrap justify-center'>{item.aromaDescriptors?.map(a => <Chip key={a.name} className="m-0.5 truncate">{a.name}</Chip>)}</div>} 
           />
         </table>
       </Block>
