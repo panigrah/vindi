@@ -3,13 +3,32 @@ import {Button} from 'konsta/react'
 export default function Clarity({ onChange }: {onChange?: (value: any) => void }) {
   return(
     <div>
-      <div onClick={() => onChange?.('Hazy')} className="cursor-pointer">
-        <img src="/clarity.hazy.red.jpg" className='w-56 h-56 object-cover aspect-square' alt='hazy-red' />
+      <div className='grid md:grid-cols-4 grid-cols-2 gap-2'>
+        <div onClick={() => onChange?.('Clear')} className="cursor-pointer rounded-lg overflow-hidden">
+          <img src="/clarity/red.clear.png" className='w-full object-cover aspect-square' alt='hazy-red' />
+        </div>
+        <div onClick={() => onChange?.('Hazy')} className="cursor-pointer rounded-lg overflow-hidden">
+          <img src="/clarity/red.hazy.png" className='w-full object-cover aspect-square' alt='hazy-red' />
+        </div>
+        <div onClick={() => onChange?.('Clear')} className="cursor-pointer rounded-lg overflow-hidden">
+          <img src="/clarity/white.clear.png" className='w-full object-cover aspect-square' alt='hazy-red' />
+        </div>
+        <div onClick={() => onChange?.('Hazy')} className="cursor-pointer rounded-lg overflow-hidden">
+          <img src="/clarity/white.hazy.png" className='w-full object-cover aspect-square' alt='hazy-red' />
+        </div>
       </div>
-      <div onClick={() => onChange?.('Clear')} className="cursor-pointer">
-        <img src="/clarity.hazy.white.png" className='w-56 h-56 object-cover aspect-square' alt='hazy-white' />
+      <div className="prose prose-slate">
+        <p>
+          Do you see any hazes in the wine? A haze might not necessarily be a fault in the product. Many wines, especially those from biodynamic and natural producers, are unfiltered and unfined. Therefore, those wines maybe hazy as a function of their winemaking style. 
+        </p>
+        <p>
+          Other reasons wine can be hazy
+          <ol>
+            <li>Protein instability. This can be viewed as a fault.</li>
+            <li>Formation of Tartrate Crystals. Potassium can react with the tartaric acid and precipiate out of solution in cold temperatures. These are referred to as wine diamonds. While these present no other sensorial detriment to the wine - they can be off putting to wine consumers. Winemakers try to cold stabilize the wine before shipping to eliminate this</li>
+          </ol>
+        </p>
       </div>
-      What do you see in the glass? These are examples of clear and hazy for red and white ones.
     </div>
   )
 }
