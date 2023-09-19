@@ -62,7 +62,7 @@ export default function TastingsPage() {
 				<>
 					<Block inset strong>
 						{ tastingList.length > 1 &&
-							<a href={`/tasting/compare/${tastingList.join('+')}`}>Compare</a>
+							<a href={`/tasting/compare/${tastingList.join('/')}`}>Compare</a>
 						}
 					</Block>
 					<List inset outline strong dividers>
