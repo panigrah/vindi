@@ -9,7 +9,6 @@ import Link from 'next/link';
 export default function TastingsPage() {
 	const { data, isLoading, error } = useQueryWines()
 
-	console.log('slugs: ', data?.map(w => slugify(w.name).toLowerCase()))
 	return (
 		<Page>
 			<Navbar

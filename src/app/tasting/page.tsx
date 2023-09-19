@@ -1,6 +1,6 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
-import { Page, Block, Navbar, List, ListItem, Preloader, Checkbox } from 'konsta/react'
+import { Page, Block, Navbar, List, ListItem, Preloader, Checkbox, Button } from 'konsta/react'
 import { TastingType, useQueryTastings } from './queries'
 import Link from 'next/link'
 import { ChevronLeftIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
@@ -60,10 +60,22 @@ export default function TastingsPage() {
 				</Block>
 				:
 				<>
-					<Block inset strong>
-						{ tastingList.length > 1 &&
-							<a href={`/tasting/compare/${tastingList.join('/')}`}>Compare</a>
-						}
+					<Block>
+						<div className='flex justify-end gap-x-2'>
+							<Button 
+								inline
+								disabled={tastingList.length === 0}
+								onClick={() => setTastingList([])}
+							>
+								Reset
+							</Button>
+							<Button 
+								inline
+								disabled={tastingList.length < 2}
+								href={`/tasting/compare/${tastingList.join('/')}`}>
+								Compare
+							</Button>
+						</div>
 					</Block>
 					<List inset outline strong dividers>
 						{data?.length ?

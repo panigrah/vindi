@@ -32,7 +32,6 @@ const CircleProgress = ({ percentage, color, width }: { percentage: number, colo
 function OptionValue(options: {name: string}[], value?: string) {
   const index = options.findIndex(c => c.name === value);
   if( index >= 0) {
-    console.log(value, options, index)
     return (<CircleProgress percentage={(index + 1)/options.length} color="#ff0000" width={24} />)
   } else {
     return <div>n/a</div>

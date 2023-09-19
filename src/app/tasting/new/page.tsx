@@ -4,7 +4,7 @@ import * as options from '@/selectOptions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from "zod"
 import { Controller, FormProvider, useController, useForm, useFormContext } from 'react-hook-form'
-import { ListItem, Popup, BlockTitle, Page, List, Navbar, Block, Button, Actions, ActionsGroup, ActionsLabel, ActionsButton, ListInput, ListButton, Notification } from 'konsta/react'
+import { Panel, Link as ConstaLink, ListItem, Popup, BlockTitle, Page, List, Navbar, Block, Button, Actions, ActionsGroup, ActionsLabel, ActionsButton, ListInput, ListButton, Notification } from 'konsta/react'
 import { useState } from 'react'
 import { useQueryWines } from '@/app/wine/queries'
 import { WineItem } from '@/app/wine/WineItem'
@@ -15,6 +15,8 @@ import { useMutationAddTasting } from '../queries'
 import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import AromaInput from './aroma-input'
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import Clarity from '../clarity'
 
 const schema = z.object({
   wine: z.object({ id: z.string() }),
@@ -88,7 +90,7 @@ const SelectWine = ({ name }: { name: string }) => {
   )
 }
 
-const InputWizard = ({ name, title }: { name: string, title: string }) => {
+const InputWizard = ({ name, title, options }: { name: string, title: string, options: {name: string}[] }) => {
   const { field } = useController({name})
   const [open, setOpen] = useState(false)
   return(
@@ -100,23 +102,47 @@ const InputWizard = ({ name, title }: { name: string, title: string }) => {
       >
         <ActionsGroup>
           <ActionsLabel>{title}</ActionsLabel>
-          <ActionsButton>Clear</ActionsButton>
-          <ActionsButton>Hazy</ActionsButton>
+          { options.map( option => {
+            return (
+              <ActionsButton 
+                key={option.name} 
+                onClick={() => {
+                  field.onChange(option)
+                  setOpen(false)
+                }}
+              >
+                {option.name}
+              </ActionsButton>
+            )
+          })}
         </ActionsGroup>
       </Actions>
     </>
   )
 }
 
-const SelectInput = ({ name, options, label }: { name: string, label?: string, options: { name: string }[] }) => {
+const SelectInput = ({ name, options, label, openHelp }: { name: string, label?: string, options: { name: string }[], openHelp?: (topic: string) => void } ) => {
   const { field, fieldState, formState } = useController({name: name})
   return (
     <ListInput
-      label={label}
+      label={
+        <div className='flex items-center gap-x-1'>
+          <span>{label}</span>
+          {openHelp && 
+            <Button 
+              inline 
+              clear
+              onClick={() => openHelp(name)}>
+              <InformationCircleIcon className='w-5 h-5'/>
+            </Button>
+          }
+        </div>
+      }
       type="select"
       dropdown
       placeholder="please choose"
       defaultValue={field.value}
+      value={field.value}
       onChange={(e:any) => field.onChange(e.target.value)}
     >
       <option value={'n/a'}>N/A</option>
@@ -130,6 +156,7 @@ const SelectInput = ({ name, options, label }: { name: string, label?: string, o
 }
 
 export default function NewTastingRoute() {
+  const [panelTopic, setPanelTopic] = useState<string>()
   const [openNotification, setNotification] = useState(false)
   const methods = useForm({
     defaultValues: {
@@ -159,6 +186,11 @@ export default function NewTastingRoute() {
   const router = useRouter()
   const mutation = useMutationAddTasting()
 
+  const setField = (fieldName: any, value: string) => {
+    methods.setValue(fieldName, value, { shouldValidate: true, shouldDirty: true, shouldTouch: true})
+    setPanelTopic(undefined)
+  }
+
   const onSubmit = (data:any, e:any) => {
     if( !data.wine?.id ) {
       setNotification(true)
@@ -183,7 +215,11 @@ export default function NewTastingRoute() {
 
   return (
     <Page>
-      <Navbar left={<Link href="/tasting"><ChevronLeftIcon className="w-5 h-5" /></Link>} title="New Tasting" right={<span>{user.username}</span>} />
+      <Navbar 
+        left={<Link href="/tasting"><ChevronLeftIcon className="w-5 h-5" /></Link>} 
+        title="New Tasting" 
+        right={<span>{user.username}</span>} 
+      />
       <Notification
         opened={openNotification}
         title={'Please update'}
@@ -194,9 +230,19 @@ export default function NewTastingRoute() {
         <SelectWine name="wine" />
         <BlockTitle>Appearance</BlockTitle>
         <List strongIos insetIos>
-          <SelectInput name="clarity" options={options.clarityOptions} label="Clarity" />
-          <InputWizard name="clartiy" title='Clarity' />
-          <SelectInput name="appearanceIntensity" options={options.appearanceIntensityOptions} label="Intensity" />
+          <SelectInput 
+            {...methods.register('clarity')}
+            name="clarity" 
+            options={options.clarityOptions}
+            label="Clarity" 
+            openHelp={setPanelTopic}
+          />
+          <SelectInput 
+            openHelp={setPanelTopic}
+            name="appearanceIntensity" 
+            options={options.appearanceIntensityOptions} 
+            label="Intensity" 
+          />
           <SelectInput name="color" options={options.colorOptions} label="Color" />
           <ListInput 
             label="Appearance Notes"
@@ -252,6 +298,26 @@ export default function NewTastingRoute() {
           <ListButton onClick={methods.handleSubmit(onSubmit, onError)}>Save</ListButton>
         </List>
       </FormProvider>
+      <Panel
+        side="left"
+        opened={!!panelTopic}
+        onBackdropClick={() => setPanelTopic(undefined)}
+       
+      >
+        <Page>
+          <Navbar
+            title={panelTopic}
+            right={
+              <ConstaLink navbar onClick={() => setPanelTopic(undefined)}>
+                Close
+              </ConstaLink>
+            } />
+          <Block>
+            <Clarity onChange={(v) => setField(panelTopic, v)} />
+          </Block>
+        </Page>
+
+      </Panel>
     </Page>
   )
 }
