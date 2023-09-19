@@ -1,17 +1,6 @@
 import { NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
 import prisma from '@/utils/db'
-
-const getUser = async () => {
-  const token = cookies().get('token')?.value
-  if(token) {
-    const u = JSON.parse(token)
-    if( u.id ) {
-      return u
-    }
-  }
-  return undefined
-}
+import { getUser } from './getUser'
 
 export async function POST(request: Request) {
     //login the user with just the name for now if not logged in or created..

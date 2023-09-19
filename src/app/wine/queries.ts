@@ -1,13 +1,15 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { ImageType } from "./image-upload";
 
 export type WineType = {
   name: string;
   appelation: string;
   description: string;
   variety?: string;
-  year: number;
+  vintage?: number;
   id?: string;
   media?: string[];
+  images?: ImageType[]
 };
 
 export const useQueryWines = () =>

@@ -18,12 +18,15 @@ model Wine {
   variety String
   appelation  String
   description String
-  varieties String
-  alcohol  Float
+  alcohol  Float?
   media String[]
-  year  Int
+  year  Int?
+  vintage Int?
   tastings Tasting[]
   addedBy String?
+  images Media[]
+  userId  String
+  user  User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -33,6 +36,7 @@ model User {
   username     String   @unique
   passwordHash String
   tastings  Tasting[]
+  wines Wine[]
 }
 
 model Tasting {
@@ -79,4 +83,16 @@ type AromaDescriptor {
   name String
   color String?
   family String
+}
+
+type Media {
+  format String
+  public_id String
+  url String
+  secure_url String?
+  width Int
+  height Int
+  original_filename String
+  bytes Int
+  asset_id String
 }

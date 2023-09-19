@@ -4,6 +4,7 @@ import { WineType } from './queries';
 
 export const WineItem = ({ wine, onSelect }: { wine: WineType; onSelect?: any; }) => {
 	const w = wine;
+	const image = w.media?.length? w.media[0]: w.images?.length? w.images[0].url : undefined;
 	return (
 		<ListItem
 			link
@@ -11,7 +12,8 @@ export const WineItem = ({ wine, onSelect }: { wine: WineType; onSelect?: any; }
 			title={w.variety}
 			subtitle={w.name}
 			text={w.description}
-			media={w.media?.length ? <img className="object-cover aspect-square ios:rounded-lg material:rounded-full ios:w-20 material:w-10" width="80" src={w.media[0]} alt={w.name} /> : null}
+			media={image ? 
+				<img className="object-cover aspect-square ios:rounded-lg material:rounded-full ios:w-20 material:w-10" width="80" src={image} alt={w.name} /> : null}
 			onClick={() => onSelect?.(w)} />
 	);
 }
