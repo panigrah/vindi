@@ -1,6 +1,6 @@
 'use client'
-import {Button} from 'konsta/react'
-export default function Clarity({ onChange }: {onChange?: (value: any) => void }) {
+
+export default function AppearanceIntensity({ onChange }: {onChange?: (value: any) => void }) {
   return(
     <div>
       <div className='grid md:grid-cols-4 grid-cols-2 gap-2'>

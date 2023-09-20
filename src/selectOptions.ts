@@ -26,6 +26,24 @@ export const colorOptions = [
     {name: "Tawney", color: "#643a48"},
 ]
 
+export const wineColors = [
+  {name: "Lemon Green", color: "#F0EEC0", family: "whites"},
+  {name: "Lemon", color: "#E5E192", family: "whites"},
+  {name: "Gold", color: "#F2C64F", family: "whites"},
+  {name: "Amber", color: "#F4952C", family: "whites"},
+  {name: "Brown", color: "#1F150F", family: "whites-hidden"},
+  {name: "Purple", color: "#470A1E", family: "reds"},
+  {name: "Ruby", color: "#55081D", family: "reds"},
+  {name: "Garnet", color: "#6D0D15", family: "reds"},
+  {name: "Tawney", color: "#94291C", family: "reds"},
+  {name: "Brown", color: "#32110E", family: "reds"},
+  {name: "Pink", color: "#FEB1C0", family: "pink"},
+  {name: "", color: "#FC7CC0", family: "pinks-hidden"},
+  {name: "Salmon", color: "#FC658C", family: "pink"},
+  {name: "", color: "#F72A63", family: "pinks-hidden"},
+  {name: "Orange", color: "#F83F45", family: "pink"},
+]
+
 export const conditionOptions = [
     {name: "Clean"},
     {name: "Unclean (faulty)"}

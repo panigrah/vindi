@@ -15,8 +15,9 @@ import { useMutationAddTasting } from '../queries'
 import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import AromaInput from './aroma-input'
-import Clarity from '../clarity'
+import Clarity from './wizards/clarity'
 import { SelectInput } from './SelectInput'
+import Color from './wizards/color'
 
 const schema = z.object({
   wine: z.object({ id: z.string() }),
@@ -205,11 +206,16 @@ export default function NewTastingRoute() {
           />
           <SelectInput 
             openHelp={setPanelTopic}
+            name="color" 
+            options={options.colorOptions} 
+            label="Color" 
+          />
+          <SelectInput 
+            openHelp={setPanelTopic}
             name="appearanceIntensity" 
             options={options.appearanceIntensityOptions} 
             label="Intensity" 
           />
-          <SelectInput name="color" options={options.colorOptions} label="Color" />
           <ListInput 
             label="Appearance Notes"
             type="textarea"
@@ -279,10 +285,10 @@ export default function NewTastingRoute() {
               </ConstaLink>
             } />
           <Block>
-            <Clarity onChange={(v) => setField(panelTopic, v)} />
+            { panelTopic === 'clarity' && <Clarity onChange={(v) => setField(panelTopic, v)} />}
+            { panelTopic === 'color' && <Color onChange={(v) => setField(panelTopic, v)} />}
           </Block>
         </Page>
-
       </Panel>
     </Page>
   )

@@ -21,16 +21,16 @@ export default function Home() {
   return (
     <Page>
       <Navbar title="Vindi" subtitle="Learn about Wine" />
-      <Tabbar className="left-0 bottom-0 fixed">
-        <TabbarLink
-          onClick={() => router.push('/tasting')}
-          label={'Tastings'}
-        />
-        <TabbarLink
-          onClick={() => router.push('/wine')}
-          label={'Wines'}
-        />
-      </Tabbar>
+        <Tabbar className="left-0 bottom-0 fixed">
+          <TabbarLink
+            onClick={() => router.push('/tasting')}
+            label={'Tastings'}
+          />
+          <TabbarLink
+            onClick={() => router.push('/wine')}
+            label={'Wines'}
+          />
+        </Tabbar>
     </Page>
   );
 }

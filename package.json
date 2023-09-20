@@ -10,6 +10,7 @@
     "postinstall": "prisma generate",
     "tool1": "ts-node tools/filematch.ts",
     "tool2": "ts-node tools/makepng.ts",
+    "tool3": "ts-node tools/colors.ts",
     "migrate": "ts-node prisma/migrate.ts"
   },
   "prisma": {
