@@ -9,7 +9,8 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "tool1": "ts-node tools/filematch.ts",
-    "tool2": "ts-node tools/makepng.ts"
+    "tool2": "ts-node tools/makepng.ts",
+    "migrate": "ts-node prisma/migrate.ts"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"

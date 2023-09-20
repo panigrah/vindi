@@ -16,11 +16,14 @@ type UserType = {
 }
 
 const UserItem = ({ user }: { user: UserType }) => {
-  return <ListItem 
-    title={user.username} 
-    media={<img src={`https://ui-avatars.com/api/?name=${user.username}`} alt={user.username} className="object-cover rounded-full w-16 h-16 aspect-square"/>}
-    header='Reviewer' 
+  return (
+    <ListItem 
+      title={user.username} 
+      // eslint-disable-next-line @next/next/no-img-element
+      media={<img src={`https://ui-avatars.com/api/?name=${user.username}`} alt={user.username} className="object-cover rounded-full w-16 h-16 aspect-square"/>}
+      header='Reviewer' 
     />
+  )
 }
 
 export default function TastingDetail({ tasting }: { tasting: TastingType }) {
@@ -63,7 +66,8 @@ export default function TastingDetail({ tasting }: { tasting: TastingType }) {
         <Block strong inset>
           {tasting.aromaDescriptors?.map( a => <Chip 
             media={
-            <img className="ios:h-7 material:h-6 rounded-full" src={aromas.find(aroma => aroma.name === a.name)?.media ?? ''} />}
+            // eslint-disable-next-line @next/next/no-img-element
+            <img alt={a.name} className="ios:h-7 material:h-6 rounded-full" src={aromas.find(aroma => aroma.name === a.name)?.media ?? ''} />}
               className="m-0.5"
               key={a.name}
               >{a.name}</Chip>)

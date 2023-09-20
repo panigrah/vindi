@@ -18,7 +18,6 @@ export async function POST(request: Request) {
       const record = await prisma.wine.create({ 
         data: { 
           ...data, 
-          varieties: [],
           user: {
             connect: {
               id: u.id

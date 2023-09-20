@@ -44,6 +44,7 @@ export default function ImageUpload({images = [], onChange}: { images?: ImageTyp
       <label onChange={add} htmlFor="upload">
         <input type='file' title="here" id="upload" hidden />
         { localFile? 
+          // eslint-disable-next-line @next/next/no-img-element
           <img src={localFile} className="border dark:border-slate-700 rounded-md w-32 aspect-square flex object-cover" alt="new file" />
           : 
           <div className='border rounded-md w-32 aspect-square flex dark:border-slate-700'>
@@ -52,6 +53,7 @@ export default function ImageUpload({images = [], onChange}: { images?: ImageTyp
         }
       </label>
       {images.map( i => 
+        // eslint-disable-next-line @next/next/no-img-element
         <img key={i.asset_id} src={i.url} alt={i.original_filename} className='border dark:border-slate-700 w-32 aspect-square object-cover rounded-md' />
       )}
     </div>

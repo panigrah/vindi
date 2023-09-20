@@ -12,8 +12,9 @@ export const WineItem = ({ wine, onSelect }: { wine: WineType; onSelect?: any; }
 			title={w.variety}
 			subtitle={w.name}
 			text={w.description}
-			media={image ? 
-				<img className="object-cover aspect-square ios:rounded-lg material:rounded-full ios:w-20 material:w-10" width="80" src={image} alt={w.name} /> : null}
+			media={
+				// eslint-disable-next-line @next/next/no-img-element
+				image ? <img className="object-cover aspect-square ios:rounded-lg material:rounded-full ios:w-20 material:w-10" width="80" src={image} alt={w.name} /> : null}
 			onClick={() => onSelect?.(w)} />
 	);
 }

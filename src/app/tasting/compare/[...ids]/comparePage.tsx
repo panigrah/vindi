@@ -63,10 +63,21 @@ export default function ComparePage({ tastings }: { tastings: any[]}) {
             items={tastings} 
             render={(item: TastingType) => (
               <div key={item.id} className='text-center flex items-center flex-col'>
-                <img src={item.wine!.media?.[0]} width={48} height={48}/>
-                <div className='whitespace-break-spaces'>
-                  <Link href={`/tasting/${item.id}`}>{item.wine!.name}</Link>
-                </div>
+                { item.wine? 
+                  <>
+                    { item.wine.images?.length ? 
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={item.wine.images?.[0].url} width={48} height={48} alt={item.wine.name} />
+                      :
+                      <div className='w-12 h-48 bg-gray-200 dark:bg-gray-800'/>
+                    }
+                    <div className='whitespace-break-spaces'>
+                      <Link href={`/tasting/${item.id}`}>{item.wine.name}</Link>
+                    </div>
+                  </>
+                  :
+                  <div>Unknown</div>
+                }
               </div>)} 
             />
           </table>

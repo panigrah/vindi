@@ -5,15 +5,19 @@ export default function Clarity({ onChange }: {onChange?: (value: any) => void }
     <div>
       <div className='grid md:grid-cols-4 grid-cols-2 gap-2'>
         <div onClick={() => onChange?.('Clear')} className="cursor-pointer rounded-lg overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/clarity/red.clear.png" className='w-full object-cover aspect-square' alt='hazy-red' />
         </div>
         <div onClick={() => onChange?.('Hazy')} className="cursor-pointer rounded-lg overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/clarity/red.hazy.png" className='w-full object-cover aspect-square' alt='hazy-red' />
         </div>
         <div onClick={() => onChange?.('Clear')} className="cursor-pointer rounded-lg overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/clarity/white.clear.png" className='w-full object-cover aspect-square' alt='hazy-red' />
         </div>
         <div onClick={() => onChange?.('Hazy')} className="cursor-pointer rounded-lg overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/clarity/white.hazy.png" className='w-full object-cover aspect-square' alt='hazy-red' />
         </div>
       </div>
