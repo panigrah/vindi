@@ -1,9 +1,10 @@
 'use client'
 import { wineColors } from '@/selectOptions'
+import { WizardComponent } from '../help-wizard'
 
 //sources
 //https://www.wineswithattitude.co.uk/blog/wine-ramblings/the-colour-of-wine-and-what-it-tells-us.html
-export default function Color({ onChange }: {onChange?: (value: any) => void }) {
+const Color:WizardComponent = ({ onChange }) => {
   return(
     <div>
       <div className='prose prose-slate prose-sm mt-4'>
@@ -111,3 +112,5 @@ export default function Color({ onChange }: {onChange?: (value: any) => void }) 
     </div>
   )
 }
+
+export default Color

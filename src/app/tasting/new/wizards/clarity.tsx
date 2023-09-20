@@ -1,6 +1,8 @@
 'use client'
 import {Button} from 'konsta/react'
-export default function Clarity({ onChange }: {onChange?: (value: any) => void }) {
+import { WizardComponent } from '../help-wizard'
+
+const Clarity:WizardComponent = ({ onChange }) => {
   return(
     <div>
       <div className="prose prose-slate prose-sm">
@@ -39,3 +41,5 @@ export default function Clarity({ onChange }: {onChange?: (value: any) => void }
       </div>
   )
 }
+
+export default Clarity
