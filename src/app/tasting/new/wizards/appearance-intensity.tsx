@@ -1,38 +1,43 @@
 'use client'
+import { Button, Block, BlockTitle } from 'konsta/react'
 
 export default function AppearanceIntensity({ onChange }: {onChange?: (value: any) => void }) {
   return(
     <div>
-      <div className='grid md:grid-cols-4 grid-cols-2 gap-2'>
-        <div onClick={() => onChange?.('Clear')} className="cursor-pointer rounded-lg overflow-hidden">
+      <BlockTitle>
+          Appearance Intensity
+      </BlockTitle>
+      <Block strong>
+        <div className="grid grid-cols-1">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/clarity/red.clear.png" className='w-full object-cover aspect-square' alt='hazy-red' />
+          <img src="/appearance/red.intensity.png" alt="red wine intensity" className="w-full" />
         </div>
-        <div onClick={() => onChange?.('Hazy')} className="cursor-pointer rounded-lg overflow-hidden">
+        <div className="grid grid-cols-1">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/clarity/red.hazy.png" className='w-full object-cover aspect-square' alt='hazy-red' />
+          <img src="/appearance/white.intensity.png" alt="white wine intensity" className="w-full" />
         </div>
-        <div onClick={() => onChange?.('Clear')} className="cursor-pointer rounded-lg overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/clarity/white.clear.png" className='w-full object-cover aspect-square' alt='hazy-red' />
+        <div className="grid grid-cols-3 gap-x-2 mt-2">
+          <div>
+            <Button onClick={() => onChange?.('Pale')}>Pale</Button>
+          </div>
+          <div>
+            <Button onClick={() => onChange?.('Medium')}>Medium</Button>
+          </div>
+          <div>
+            <Button onClick={() => onChange?.('Deep')}>Deep</Button>
+          </div>
         </div>
-        <div onClick={() => onChange?.('Hazy')} className="cursor-pointer rounded-lg overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/clarity/white.hazy.png" className='w-full object-cover aspect-square' alt='hazy-red' />
+      </Block>
+      <Block strong>
+        <div className="prose prose-slate prose-sm">
+          <p>
+            Tilt the wine glass so that the rim of the glass is away from you and you see the shape above on top of a white cloth or paper. The more you can see through the paler the intensity is for that color of wine. A pale wine should have a wide area that appears watery while a deeper wine will have a shorter area starting from the top that appears translucent. 
+          </p>
+          <p>
+            The intensity of the wine can point to the age of the wine and can also indicate the level of tannins and acidity. Paler looking wines tend to be low tannin and high acidity whereas deeper wines have higher tannins and lower acidity. Deeper wines also tend to be older wines.
+          </p>
         </div>
-      </div>
-      <div className="prose prose-slate">
-        <p>
-          Do you see any hazes in the wine? A haze might not necessarily be a fault in the product. Many wines, especially those from biodynamic and natural producers, are unfiltered and unfined. Therefore, those wines maybe hazy as a function of their winemaking style. 
-        </p>
-        <p>
-          Other reasons wine can be hazy
-          <ol>
-            <li>Protein instability. This can be viewed as a fault.</li>
-            <li>Formation of Tartrate Crystals. Potassium can react with the tartaric acid and precipiate out of solution in cold temperatures. These are referred to as wine diamonds. While these present no other sensorial detriment to the wine - they can be off putting to wine consumers. Winemakers try to cold stabilize the wine before shipping to eliminate this</li>
-          </ol>
-        </p>
-      </div>
+      </Block>
     </div>
   )
 }
