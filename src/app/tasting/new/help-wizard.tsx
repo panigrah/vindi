@@ -3,6 +3,7 @@ import { Panel, Link as ConstaLink, Page, Navbar, Block } from 'konsta/react';
 import Clarity from './wizards/clarity';
 import Color from './wizards/color';
 import AppearanceIntensity from './wizards/appearance-intensity';
+import AromaIntensity from './wizards/aroma-intensity';
 
 export type WizardComponent = React.FC<{onChange?: (value: any) => void}>
 
@@ -13,7 +14,8 @@ interface WizardsType {
 const WizardList:WizardsType = {
   clarity: { Component: Clarity, title: 'Clarity' },
   color: { Component: Color, title: 'Color' },
-  appearanceIntensity: { Component: AppearanceIntensity, title: 'Intensity' }
+  appearanceIntensity: { Component: AppearanceIntensity, title: 'Intensity' },
+  noseIntensity: { Component: AromaIntensity, title: 'Intensity' },
 }
 
 export function HelpWizard({ topic, title, update, onClose }: { topic?: string; title?: string; update?: any; onClose: () => void; }) {

@@ -136,7 +136,12 @@ export default function NewTastingRoute() {
         <BlockTitle>Nose</BlockTitle>
         <List strongIos insetIos >
           <SelectInput name="condition" options={options.conditionOptions} label="Condition" />
-          <SelectInput name="noseIntensity" options={options.noseIntensityOptions} label="Intensity" />
+          <SelectInput 
+            name="noseIntensity" 
+            openHelp={setPanelTopic}
+            options={options.noseIntensityOptions} 
+            label="Intensity" 
+          />
           <ListInput 
             label="Aroma"
             type="textarea"
