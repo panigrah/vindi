@@ -7,17 +7,17 @@ import AppearanceIntensity from './wizards/appearance-intensity';
 export type WizardComponent = React.FC<{onChange?: (value: any) => void}>
 
 interface WizardsType {
-  [key: string]: WizardComponent
+  [key: string]: { Component: WizardComponent, title: string }
 }
 
 const WizardList:WizardsType = {
-  clarity: Clarity,
-  color: Color,
-  appearanceIntensity: AppearanceIntensity
+  clarity: { Component: Clarity, title: 'Clarity' },
+  color: { Component: Color, title: 'Color' },
+  appearanceIntensity: { Component: AppearanceIntensity, title: 'Intensity' }
 }
 
 export function HelpWizard({ topic, title, update, onClose }: { topic?: string; title?: string; update?: any; onClose: () => void; }) {
-  const Component = topic? WizardList[topic] : null;
+  const Wizard = topic? WizardList[topic] : null;
 
   return (
     <Panel
@@ -27,12 +27,12 @@ export function HelpWizard({ topic, title, update, onClose }: { topic?: string; 
     >
       <Page>
         <Navbar
-          title={title ?? topic}
+          title={Wizard?.title ?? topic}
           right={<ConstaLink navbar onClick={() => onClose()}>
             Close
           </ConstaLink>} />
         <Block>
-          {Component && <Component onChange={(v) => update(topic, v)} />}
+          {Wizard?.Component && <Wizard.Component onChange={(v) => update(topic, v)} />}
         </Block>
       </Page>
     </Panel>

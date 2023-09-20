@@ -8,7 +8,7 @@ const Clarity:WizardComponent = ({ onChange }) => {
       <div className="prose prose-slate prose-sm">
         <h2>Wine Clarity</h2>
       </div>
-        <div className='grid md:grid-cols-4 grid-cols-2 gap-2 my-2'>
+        <div className='grid md:grid-cols-2 grid-cols-2 gap-2 my-2'>
           <div onClick={() => onChange?.('Clear')} className="cursor-pointer rounded-lg overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/clarity/red.clear.png" className='w-full object-cover aspect-square' alt='hazy-red' />
