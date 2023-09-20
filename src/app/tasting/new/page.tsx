@@ -4,10 +4,8 @@ import * as options from '@/selectOptions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from "zod"
 import { Controller, FormProvider, useController, useForm, useFormContext } from 'react-hook-form'
-import { Panel, Link as ConstaLink, ListItem, Popup, BlockTitle, Page, List, Navbar, Block, Button, Actions, ActionsGroup, ActionsLabel, ActionsButton, ListInput, ListButton, Notification } from 'konsta/react'
+import { ListItem, BlockTitle, Page, List, Navbar, Block, Actions, ActionsGroup, ActionsLabel, ActionsButton, ListInput, ListButton, Notification } from 'konsta/react'
 import { useState } from 'react'
-import { useQueryWines } from '@/app/wine/queries'
-import { WineItem } from '@/app/wine/WineItem'
 import { useAtomValue } from 'jotai'
 import { userAtom } from '@/app/atoms'
 import { useRouter } from 'next/navigation'
@@ -15,9 +13,9 @@ import { useMutationAddTasting } from '../queries'
 import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import AromaInput from './aroma-input'
-import Clarity from './wizards/clarity'
 import { SelectInput } from './SelectInput'
-import Color from './wizards/color'
+import { SelectWine } from './SelectWine'
+import { HelpWizard } from './help-wizard'
 
 const schema = z.object({
   wine: z.object({ id: z.string() }),
@@ -31,96 +29,6 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 const resolver = zodResolver(schema)
-
-const SelectWine = ({ name }: { name: string }) => {
-  const { field, fieldState, formState } = useController({name})
-  const [open, setOpen] = useState(false)
-  const { data: wines, isLoading, error } = useQueryWines()
-
-  const select = (w:any) => {
-    field.onChange(w)
-    setOpen(false)
-  }
-
-  return(
-    <>
-    <List inset outline strong>
-      {field.value?
-        <WineItem wine={field.value} onSelect={() => setOpen(true)} />
-      :
-        <ListItem 
-          link
-          onClick={() => setOpen(true)}
-          title="Select a wine"
-        />
-      }
-
-    </List>
-    <Popup 
-      opened={open}
-      onBackdropClick={() => setOpen(false)}
-    >
-      <Page>
-        <Navbar 
-          title="Select a wine"
-          right={
-            <Button navbar onClick={() => setOpen(false)}>
-              Close
-            </Button>
-          }
-        />
-        <List strongIos insetIos>
-          <ListInput
-            type="text"
-            clearButton
-            placeholder="search for a wine"
-          />
-        </List>
-        <List strong inset outline dividers>
-          { wines?.map( w => (
-            <WineItem 
-              key={w.id}
-              wine={w}
-              onSelect={select}
-            />
-          ))}
-        </List>
-      </Page>
-    </Popup>
-    </>
-  )
-}
-
-const InputWizard = ({ name, title, options }: { name: string, title: string, options: {name: string}[] }) => {
-  const { field } = useController({name})
-  const [open, setOpen] = useState(false)
-  return(
-    <>
-      <ListItem header={title} title={field.value} link onClick={() => setOpen(true)} />
-      <Actions
-        opened={open}
-        onBackdropClick={() => setOpen(false)}
-      >
-        <ActionsGroup>
-          <ActionsLabel>{title}</ActionsLabel>
-          { options.map( option => {
-            return (
-              <ActionsButton 
-                key={option.name} 
-                onClick={() => {
-                  field.onChange(option)
-                  setOpen(false)
-                }}
-              >
-                {option.name}
-              </ActionsButton>
-            )
-          })}
-        </ActionsGroup>
-      </Actions>
-    </>
-  )
-}
 
 export default function NewTastingRoute() {
   const [panelTopic, setPanelTopic] = useState<string>()
@@ -270,26 +178,11 @@ export default function NewTastingRoute() {
           <ListButton onClick={methods.handleSubmit(onSubmit, onError)}>Save</ListButton>
         </List>
       </FormProvider>
-      <Panel
-        side="left"
-        opened={!!panelTopic}
-        onBackdropClick={() => setPanelTopic(undefined)}
-       
-      >
-        <Page>
-          <Navbar
-            title={panelTopic}
-            right={
-              <ConstaLink navbar onClick={() => setPanelTopic(undefined)}>
-                Close
-              </ConstaLink>
-            } />
-          <Block>
-            { panelTopic === 'clarity' && <Clarity onChange={(v) => setField(panelTopic, v)} />}
-            { panelTopic === 'color' && <Color onChange={(v) => setField(panelTopic, v)} />}
-          </Block>
-        </Page>
-      </Panel>
+      <HelpWizard 
+        topic={panelTopic}
+        update={ (topic:string, value:any) => setField(topic, value)}
+        onClose={() => setPanelTopic(undefined)}
+      />
     </Page>
   )
 }
