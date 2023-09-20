@@ -106,7 +106,6 @@ export default function NewTastingRoute() {
         <BlockTitle>Appearance</BlockTitle>
         <List strongIos insetIos>
           <SelectInput 
-            {...methods.register('clarity')}
             name="clarity" 
             options={options.clarityOptions}
             label="Clarity" 

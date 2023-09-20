@@ -7,18 +7,20 @@ export const SelectInput = ({ name, options, label, openHelp }: { name: string; 
   const { field, fieldState, formState } = useController({ name: name });
   return (
     <ListInput
-      label={<div className='flex items-center gap-x-1'>
-        <span>{label}</span>
-        {openHelp &&
-          <Button
-            inline
-            clear
-            onClick={() => openHelp(name)}>
-            <InformationCircleIcon className='w-5 h-5' />
-          </Button>}
-      </div>}
+      label={
+        <div className='flex items-center gap-x-1'>
+          <span className='text-sm font-light'>{label}</span>
+          {openHelp &&
+            <div
+              onClick={() => openHelp(name)}>
+              <InformationCircleIcon className='w-5 h-5 cursor-pointer' />
+            </div>
+          }
+        </div>
+      }
       type="select"
       dropdown
+      inputClassName="text-lg"
       placeholder="please choose"
       defaultValue={field.value}
       value={field.value}

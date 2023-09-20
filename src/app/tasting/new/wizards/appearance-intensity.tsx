@@ -4,7 +4,7 @@ import { Button, Block, BlockTitle } from 'konsta/react'
 export default function AppearanceIntensity({ onChange }: {onChange?: (value: any) => void }) {
   return(
     <div>
-      <BlockTitle>
+      <BlockTitle className="prose dark:prose-invert">
           Appearance Intensity
       </BlockTitle>
       <Block strong>
@@ -29,7 +29,7 @@ export default function AppearanceIntensity({ onChange }: {onChange?: (value: an
         </div>
       </Block>
       <Block strong>
-        <div className="prose prose-slate prose-sm">
+        <div className="prose prose-slate dark:prose-invert">
           <p>
             Tilt the wine glass so that the rim of the glass is away from you and you see the shape above on top of a white cloth or paper. The more you can see through the paler the intensity is for that color of wine. A pale wine should have a wide area that appears watery while a deeper wine will have a shorter area starting from the top that appears translucent. 
           </p>

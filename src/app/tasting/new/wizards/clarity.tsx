@@ -5,7 +5,7 @@ import { WizardComponent } from '../help-wizard'
 const Clarity:WizardComponent = ({ onChange }) => {
   return(
     <div>
-      <div className="prose prose-slate prose-sm">
+      <div className="prose prose-slate prose-sm dark:prose-invert">
         <h2>Wine Clarity</h2>
       </div>
         <div className='grid md:grid-cols-2 grid-cols-2 gap-2 my-2'>
@@ -26,7 +26,7 @@ const Clarity:WizardComponent = ({ onChange }) => {
             <img src="/clarity/white.hazy.png" className='w-full object-cover aspect-square' alt='hazy-red' />
           </div>
         </div>
-        <div className="prose prose-slate prose-sm">
+        <div className="prose prose-slate prose-sm  dark:prose-invert">
         <p>
           Do you see any hazes in the wine? A haze might not necessarily be a fault in the product. Many wines, especially those from biodynamic and natural producers, are unfiltered and unfined. Therefore, those wines maybe hazy as a function of their winemaking style. 
         </p>

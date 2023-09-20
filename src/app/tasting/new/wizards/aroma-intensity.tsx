@@ -4,7 +4,7 @@ import { Button, Block, BlockTitle } from 'konsta/react'
 export default function AromaIntensity({ onChange }: { onChange?: (value: any) => void }) {
   return (
     <div>
-      <BlockTitle>
+      <BlockTitle className="prose dark:prose-invert">
           Aroma Intensity
       </BlockTitle>
       <Block strong>
