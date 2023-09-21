@@ -51,14 +51,13 @@ export default function Readiness({ onChange }: { onChange?: (value: any) => voi
           })}
           <div className="mt-4">
             <Progressbar progress={score/2} />
-            <div className='grid grid-cols-3'>
+            <div className='grid grid-cols-2'>
               <div className='text-left'>Aging Potential</div>
-              <div className="text-center">Drink Now</div>
-              <div className="text-right">Too Old</div>
+              <div className="text-right">Drink Now</div>
             </div>
             <Button
               className="mt-4"
-              onClick={() => onChange?.(readinessOptions[Math.round(score)].name)}
+              onClick={() => onChange?.(readinessOptions[Math.round(score)/2].name)}
             >
               Continue
             </Button>
@@ -67,10 +66,11 @@ export default function Readiness({ onChange }: { onChange?: (value: any) => voi
         <h2>The second-day test</h2>
         <ol>
           <li>Open the bottle, pour a generous glass and immediately put the cork or cap back on the bottle – don’t use any pumps or preservatives.</li>
-          <li>Taste the wine, looking for the characteristics listed above – make a note of your first impressions (learn more about making wine tasting notes here).</li>
+          <li>Taste the wine, looking for the characteristics listed above – make a note of your first impressions.</li>
           <li>A couple of hours later, pour another glass and taste again. Put the cork or cap back on the bottle (again, with no aeration or decanting) and leave it on the counter overnight.</li>
-          <li>Taste again the next day. Most wines will have faded, but if yours still tastes good – or better – then you can generally expect it to age well for many years.</li>
+          <li>Pour another glass and Taste again the next day. Most wines will have faded, but if yours still tastes good – or better – then you can generally expect it to age well for many years.</li>
         </ol>
+        <p>The rule of thumb typically translates to two to three years of age for each day the wine showcases a developed palate.</p>
         <h2>Typical age-worthy wines</h2>
         <p>
           <dt>Cabernet Sauvignon</dt>
