@@ -115,11 +115,11 @@ export const flavorIntensityOptions = [
 ]
 
 export const finishOptions = [
-    {name: "Short"},
-    {name: "Medium-"},
-    {name: "Medium"},
-    {name: "Medium+"},
-    {name: "Long"},
+    {name: "Short", description: "Lasts a couple of seconds and stops adruptly"},
+    {name: "Medium-", description: ""},
+    {name: "Medium", description: "Lasts 6-10seconds"},
+    {name: "Medium+", description: ""},
+    {name: "Long", description: "Lasts for 20 seconds"},
 ]
 
 export const qualityLevelOptions = [
