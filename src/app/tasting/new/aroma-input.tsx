@@ -3,9 +3,10 @@ import { aromaList, colorList } from '@/selectOptions';
 import { useEffect, useMemo, useState } from 'react';
 //import { PieChart } from 'react-minimal-pie-chart';
 //import Sunburst from 'sunburst-chart'
-import { Block, BlockTitle, List, ListItem, Chip } from 'konsta/react'
+import { Button, Block, BlockTitle, List, ListItem, Chip } from 'konsta/react'
 import * as d3 from 'd3'
 import { useController } from 'react-hook-form';
+import { ArrowLeftIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 
 /*
 type EntryType = {
@@ -118,7 +119,7 @@ type AromaType = {
   color?: string;
 }
 
-const AromaInput = ({name, label}: { name: string, label: string}) => {
+const AromaInput = ({name, label, openHelp}: { name: string, label: string, openHelp?: (topic: string) => void; }) => {
   const { field, fieldState, formState } = useController({name})
   const [family, setFamily] = useState('root')
   const [percentVisible, setPercentVisible] = useState(0)
@@ -170,26 +171,34 @@ const AromaInput = ({name, label}: { name: string, label: string}) => {
 
   return (
     <>
-    <BlockTitle>What do you smell</BlockTitle>
+    <BlockTitle>
+      Aroma Descriptors
+    </BlockTitle>
     <Block inset strong>
-      { aromas.length?
-          aromas.map(a =>  
-              <Chip
-                className="m-0.5"
-                key={a.name}
-                deleteButton
-                onDelete={() => {
-                  setAromas(aromas.filter( aroma => aroma.name !== a.name ))
-                }}
-              >
-                {a.name}
-              </Chip>
-          )
-        :
-          <p>Select a smell</p>
-      }
-    </Block>
-    <Block inset strong>
+      <div className=''>
+        <div className='flex flex-row justify-between items-center border-b -mx-4 pb-1 -mt-2'>
+          <Button
+            onClick={() => { if(parent) setFamily(parent)}}
+            disabled={!parent}
+            clear
+            inline
+          >
+            <ArrowLeftIcon className='w-5 h-5'/>
+          </Button>
+          <div className='font-bold uppercase text-slate-500'>
+            Aroma Wheel
+          </div>
+          <div>
+            <Button
+              onClick={() => openHelp?.(name)}
+              disabled={!openHelp}
+              clear
+              inline
+            >
+              <InformationCircleIcon className='w-5 h-5'/>
+            </Button>
+          </div>
+        </div>
       <svg className='w-full aspect-square mx-auto mt-4'>
         <g className='translate-x-[50%] translate-y-[50%]'>
           { pie(data).map((d, index) => {
@@ -226,6 +235,25 @@ const AromaInput = ({name, label}: { name: string, label: string}) => {
           })} 
         </g>
       </svg>
+      </div>
+        <div className='border-t pt-2 -mx-4 px-4'>
+        { aromas.length?
+            aromas.map(a =>  
+                <Chip
+                  className="m-0.5"
+                  key={a.name}
+                  deleteButton
+                  onDelete={() => {
+                    setAromas(aromas.filter( aroma => aroma.name !== a.name ))
+                  }}
+                >
+                  {a.name}
+                </Chip>
+            )
+          :
+            <p>No Aromas Selected</p>
+        }
+      </div>
     </Block>
     </>    
   )

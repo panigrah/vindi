@@ -58,19 +58,19 @@ export const noseIntensityOptions = [
 ]
 
 export const developmentOptions = [
-    {name: "Youthful"},
-    {name: "Developing"},
-    {name: "Fully Developed"},
-    {name: "Tired, past best"},
+    {name: "Youthful", description: "Fruity and floral from the grapes - green, citrus, stone, tropical"},
+    {name: "Developing", description: "Starting to get hints of oaky, nutty, buttery, creamy aromas"},
+    {name: "Fully Developed", description: "Fruity and floral aromas balanced with oak, nutts, coffee, toffee, caramel, chocolate, vanilla, toast, mushrooms"},
+    {name: "Tired, past best", description: "Dark notes overpower the fruity and floral aromas"},
 ]
 
 export const sweetnessOptions = [
-    {name: "Dry"},
-    {name: "Off Dry"},
-    {name: "Medium Dry"},
-    {name: "Medium Sweet"},
-    {name: "Sweet"},
-    {name: "Luscious"},
+    {name: "Dry", description:"Less than 4g/L. Less than one tsp of sugar in a liter"},
+    {name: "Off Dry", description:"between 5-9g/L. Between one to two tsp of sugar in a liter"},
+    {name: "Medium Dry", description:"between 10-18g/L. 1 to 1.5 tbsps of sugar in a liter"},
+    {name: "Medium Sweet", description:"between 19-45g/L. This is as much as one tablespoon of sugar in a cup of coffee or tea."},
+    {name: "Sweet", description: "Above 45g/L. Now you are going much sweeter than a tablespoon in your cup and upto 1.5 times the sugar in a regular coke or pepsi 108g/L) "},
+    {name: "Luscious", description: "Over 150g/L. This well sweeter than a can of coke. Now you are thinking sweet desserts and ice-cream"},
 ]
 
 export const acidityOptions = [

@@ -153,12 +153,26 @@ export default function NewTastingRoute() {
             inputClassName="!h-20 resize-none"
             {...methods.register('aromaDescription')}
           />
-          <SelectInput name="development" options={options.developmentOptions} label="Development" />
+          <SelectInput
+            openHelp={setPanelTopic}
+            name="development" 
+            options={options.developmentOptions} 
+            label="Development" 
+          />
         </List>
-        <AromaInput name="aromaDescriptors" label="Aromas" />
+        <AromaInput 
+          openHelp={setPanelTopic}
+          name="aromaDescriptors" 
+          label="Aromas" 
+        />
         <BlockTitle>Palete</BlockTitle>
         <List strongIos insetIos >
-          <SelectInput name="sweetness" options={options.sweetnessOptions} label="Sweetness" />
+          <SelectInput 
+            openHelp={setPanelTopic}
+            name="sweetness" 
+            options={options.sweetnessOptions} 
+            label="Sweetness" 
+          />
           <SelectInput name="acidity" options={options.acidityOptions} label="Acidity" />
           <SelectInput name="tannin" options={options.tanninOptions} label="Tannin" />
           <SelectInput name="alcohol" options={options.alcoholOptions} label="Alcohol" />

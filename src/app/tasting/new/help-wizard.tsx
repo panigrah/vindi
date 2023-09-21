@@ -5,6 +5,9 @@ import Color from './wizards/color';
 import AppearanceIntensity from './wizards/appearance-intensity';
 import AromaIntensity from './wizards/aroma-intensity';
 import Condition from './wizards/condition';
+import Development from './wizards/development';
+import AromaDescriptors from './wizards/aroma-descriptors';
+import Sweetness from './wizards/sweetness';
 
 export type WizardComponent = React.FC<{onChange?: (value: any) => void}>
 
@@ -18,6 +21,9 @@ const WizardList:WizardsType = {
   appearanceIntensity: { Component: AppearanceIntensity, title: 'Intensity' },
   noseIntensity: { Component: AromaIntensity, title: 'Intensity' },
   condition: { Component: Condition, title: 'Nose Condition' },
+  development: { Component: Development, title: 'Development' },
+  aromaDescriptors: { Component: AromaDescriptors, title: 'Aroma Descriptors' },
+  sweetness: { Component: Sweetness, title: 'Sweetness' }
 }
 
 export function HelpWizard({ topic, title, update, onClose }: { topic?: string; title?: string; update?: any; onClose: () => void; }) {

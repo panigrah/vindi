@@ -1,4 +1,7 @@
 /*
+https://quizlet.com/87235063/wset-level-3-chapter-7-9-flash-cards/
+
+
 colors: https://winefolly.com/tips/wine-color-chart/
 clarity: white-wine from https://www.extension.iastate.edu/wine/haze-forming-proteins-wine/
 clarity: red-wine from https://blog.homebrewing.org/cloudy-pectin-haze-enzyme/
@@ -33,7 +36,6 @@ https://en.wikipedia.org/wiki/Aging_of_wine
 
 Taste
 https://vincarta.com/blog/wine-tasting-beginners
-
 sweetness
 WSET - sweetness model gms of sugar in water.
 
