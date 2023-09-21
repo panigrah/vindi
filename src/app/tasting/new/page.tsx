@@ -19,21 +19,39 @@ import { HelpWizard } from './help-wizard'
 
 const schema = z.object({
   wine: z.object({ id: z.string() }),
-  clarity: z.object({ name: z.string() }),
+  acidity: z.string(),
+  alcohol: z.string(),
+  body: z.string(),
+  clarity: z.string(),
+  color: z.string(),
+  condition: z.string(),
+  development: z.string(),
+  finish: z.string(),
+  flavorIntensity: z.string(),
+  appearanceIntensity: z.string(),
+  noseIntensity: z.string(),
+  quality: z.string(),
+  readiness: z.string(),
+  sweetness: z.string(),
+  tannin: z.string(),
   appearanceNotes: z.string(),
   aromaDescription: z.string(),
   flavorCharacteristics: z.string(),
-  otherObservations: z.string(),
-  acidity: z.string(),
+  otherCharacteristics: z.string(),
+  aromaDescriptors: z.array(z.object({
+    family: z.string(),
+    name: z.string(),
+    color: z.string()
+  })).min(0)
 })
 
-type FormData = z.infer<typeof schema>
+type TastingInputType = z.infer<typeof schema>
 const resolver = zodResolver(schema)
 
 export default function NewTastingRoute() {
   const [panelTopic, setPanelTopic] = useState<string>()
   const [openNotification, setNotification] = useState(false)
-  const methods = useForm({
+  const methods = useForm<TastingInputType>({
     defaultValues: {
       acidity: "n/a",
       alcohol: "n/a",
@@ -77,7 +95,8 @@ export default function NewTastingRoute() {
       setNotification(true)
       return;
     }
-    mutation.mutate(data, {
+    const payload = schema.parse(data)
+    mutation.mutate(payload as any, {
       onSuccess: (data) => {
         router.replace(`/tasting/${data.id}`)
       },

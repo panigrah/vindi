@@ -1,36 +1,12 @@
-'use client'
+import prisma from "@/utils/db";
+import HomePage from "./home-page";
 
-import {
-  Page,
-  Navbar,
-  Block,
-  Button,
-  List,
-  ListItem,
-  Link,
-  BlockTitle,
-  Tabbar,
-  TabbarLink,
-  Icon
-} from 'konsta/react';
-import { useRouter } from 'next/navigation';
-
-export default function Home() {
-  const router = useRouter()
+export default async function Home() {
+  const wines = await prisma.wine.count()
+  const tastings = await prisma.tasting.count()
+  const users = await prisma.user.count()
 
   return (
-    <Page>
-      <Navbar title="Vindi" subtitle="Learn about Wine" />
-        <Tabbar className="left-0 bottom-0 fixed">
-          <TabbarLink
-            onClick={() => router.push('/tasting')}
-            label={'Tastings'}
-          />
-          <TabbarLink
-            onClick={() => router.push('/wine')}
-            label={'Wines'}
-          />
-        </Tabbar>
-    </Page>
+    <HomePage wines={wines} tastings={tastings} users={users} />
   );
 }
