@@ -87,23 +87,23 @@ function AromaInput() {
 }
 */
 
-const Arc = ({ arcData, onSelect, selected = false }: { arcData: any, onSelect: () => void, selected?:boolean }) => {
-  const arc = d3.arc().innerRadius(15 + (selected? 10: 0)).outerRadius(120 + (selected? 10: 0))
-  if(!arcData) return null
+const Arc = ({ arcData, onSelect, selected = false }: { arcData: any, onSelect: () => void, selected?: boolean }) => {
+  const arc = d3.arc().innerRadius(15 + (selected ? 10 : 0)).outerRadius(120 + (selected ? 10 : 0))
+  if (!arcData) return null
   const d = arc(arcData)
-  if(!d) return null;
+  if (!d) return null;
   const d2 = d3.arc().innerRadius(125).outerRadius(135)(arcData)
 
-  return(
+  return (
     <>
       <path
         fill={arcData.data.color}
         d={d}
-        className={selected? 'stroke-white dark:stroke-black' : ''}
+        className={selected ? 'stroke-white dark:stroke-black' : ''}
         strokeWidth={4}
         onClick={() => onSelect()}
       />
-      { d2 && 
+      {d2 &&
         <path
           d={d2}
           fill={arcData.data.color}
@@ -119,21 +119,21 @@ type AromaType = {
   color?: string;
 }
 
-const AromaInput = ({name, label, openHelp}: { name: string, label: string, openHelp?: (topic: string) => void; }) => {
-  const { field, fieldState, formState } = useController({name})
+const AromaInput = ({ name, label, openHelp }: { name: string, label: string, openHelp?: (topic: string) => void; }) => {
+  const { field, fieldState, formState } = useController({ name })
   const [family, setFamily] = useState('root')
   const [percentVisible, setPercentVisible] = useState(0)
   const [selected, setSelected] = useState('')
   //const [aromas, setAromas] = useState<AromaType[]>([])
   const pie = d3.pie().startAngle(0).endAngle(percentVisible * Math.PI)
-  
+
   const aromas = field.value as AromaType[]
   const setAromas = (values: AromaType[]) => {
     field.onChange(values)
   }
   const aromaDictionary = useMemo(() => aromaList(), [])
   //console.log(aromaDictionary)
-  const data = useMemo(() => 
+  const data = useMemo(() =>
     aromaDictionary
       .filter(a => a.family === family)
       .map((a, index, array) => ({
@@ -143,26 +143,26 @@ const AromaInput = ({name, label, openHelp}: { name: string, label: string, open
         extra: a,
         valueOf: () => aromaDictionary.filter(f => f.family === a.name).length + 1
       }))
-      , [family, aromaDictionary])
+    , [family, aromaDictionary])
 
-    useEffect(() => {
-      d3.selection()
-        .transition('pie-reveal')
-        .duration(3000)
-        .ease(d3.easeSinInOut)
-        .tween('percentVisible', () => {
-          const percentInterpolate = d3.interpolate(0, 100)
-          return t => setPercentVisible(percentInterpolate(t))
-        })
-    }, [data])
+  useEffect(() => {
+    d3.selection()
+      .transition('pie-reveal')
+      .duration(3000)
+      .ease(d3.easeSinInOut)
+      .tween('percentVisible', () => {
+        const percentInterpolate = d3.interpolate(0, 100)
+        return t => setPercentVisible(percentInterpolate(t))
+      })
+  }, [data])
 
   const parent = aromaDictionary.find(f => f.name === family)?.family
   const select = (index: number) => {
     //only set family if there are more children?
-    if( aromaDictionary.filter(a => a.family === data[index].extra.name).length > 0)
+    if (aromaDictionary.filter(a => a.family === data[index].extra.name).length > 0)
       setFamily(data[index].extra.name)
     else {
-      if(!aromas.find(a => a.name === data[index].extra.name )) {
+      if (!aromas.find(a => a.name === data[index].extra.name)) {
         setAromas([...aromas, data[index].extra])
       }
     }
@@ -171,91 +171,91 @@ const AromaInput = ({name, label, openHelp}: { name: string, label: string, open
 
   return (
     <>
-    <BlockTitle>
-      Aroma Descriptors
-    </BlockTitle>
-    <Block inset strong>
-      <div className=''>
-        <div className='flex flex-row justify-between items-center border-b -mx-4 pb-1 -mt-2'>
-          <Button
-            onClick={() => { if(parent) setFamily(parent)}}
-            disabled={!parent}
-            clear
-            inline
-          >
-            <ArrowLeftIcon className='w-5 h-5'/>
-          </Button>
-          <div className='font-bold uppercase text-slate-500'>
-            Aroma Wheel
-          </div>
-          <div>
+      <BlockTitle>
+        Aroma Descriptors
+      </BlockTitle>
+      <Block inset strong>
+        <div className='max-w-md mx-auto'>
+          <div className='flex flex-row justify-between items-center border-b -mx-4 pb-1 -mt-2'>
             <Button
-              onClick={() => openHelp?.(name)}
-              disabled={!openHelp}
+              onClick={() => { if (parent) setFamily(parent) }}
+              disabled={!parent}
               clear
               inline
             >
-              <InformationCircleIcon className='w-5 h-5'/>
+              <ArrowLeftIcon className='w-5 h-5' />
             </Button>
+            <div className='font-bold uppercase text-slate-500'>
+              Aroma Wheel
+            </div>
+            <div>
+              <Button
+                onClick={() => openHelp?.(name)}
+                disabled={!openHelp}
+                clear
+                inline
+              >
+                <InformationCircleIcon className='w-5 h-5' />
+              </Button>
+            </div>
           </div>
+          <svg className='w-full aspect-square mx-auto mt-4' viewBox='0 0 300 300'>
+            <g className='translate-x-[50%] translate-y-[50%]'>
+              {pie(data).map((d, index) => {
+                return <Arc
+                  arcData={{ ...d }}
+                  key={index}
+                  onSelect={() => select(index)}
+                  selected={data[index].extra.name === selected}
+                />
+              })}
+              <circle
+                cx={0}
+                cy={0}
+                r={15}
+                className="fill-slate-100 dark:fill-slate-900" onClick={() => { if (parent) setFamily(parent) }} />
+              {pie(data).map((d, index) => {
+                const angle = (d.startAngle + d.endAngle) / 2
+                const x = Math.cos(angle) * 25
+                const y = Math.sin(angle) * 25
+                const deg = (angle - Math.PI / 2) / Math.PI * 180
+                return (
+                  <g transform={`rotate(${deg})`} key={index}>
+                    <g transform={`translate(45, 5)`}>
+                      <text
+                        style={{ stroke: 'white', strokeWidth: '0.5em', fill: 'black', paintOrder: 'stroke', strokeLinejoin: 'round' }}
+                        onClick={() => select(index)}
+                        transform={'scaleX(-1)'}
+                      >
+                        {data[index].extra.name}
+                      </text>
+                    </g>
+                  </g>
+                )
+              })}
+            </g>
+          </svg>
         </div>
-      <svg className='w-full aspect-square mx-auto mt-4'>
-        <g className='translate-x-[50%] translate-y-[50%]'>
-          { pie(data).map((d, index) => {
-            return <Arc 
-                      arcData={{...d}} 
-                      key={index} 
-                      onSelect={() => select(index)} 
-                      selected={data[index].extra.name === selected} 
-                    />
-          })} 
-           <circle 
-            cx={0} 
-            cy={0} 
-            r={15} 
-            className="fill-slate-100 dark:fill-slate-900" onClick={() => { if(parent) setFamily(parent)}} />
-          { pie(data).map((d, index) => {
-            const angle = (d.startAngle + d.endAngle)/2
-            const x = Math.cos(angle) * 25
-            const y = Math.sin(angle) * 25
-            const deg = (angle - Math.PI/2) / Math.PI * 180
-            return (
-              <g transform={`rotate(${deg})`} key={index}>
-                <g transform={`translate(45, 5)`}>
-                  <text 
-                    style={{stroke:'white', strokeWidth:'0.5em', fill:'black', paintOrder:'stroke', strokeLinejoin:'round'}}
-                    onClick={() => select(index)}
-                    transform={'scaleX(-1)'}
-                  >
-                    {data[index].extra.name}
-                  </text>
-                </g>
-              </g>
-            )
-          })} 
-        </g>
-      </svg>
-      </div>
         <div className='border-t pt-2 -mx-4 px-4'>
-        { aromas.length?
-            aromas.map(a =>  
-                <Chip
-                  className="m-0.5"
-                  key={a.name}
-                  deleteButton
-                  onDelete={() => {
-                    setAromas(aromas.filter( aroma => aroma.name !== a.name ))
-                  }}
-                >
-                  {a.name}
-                </Chip>
+          {aromas.length ?
+            aromas.map(a =>
+              <Chip
+                className="m-0.5"
+                key={a.name}
+                deleteButton
+                onDelete={() => {
+                  setAromas(aromas.filter(aroma => aroma.name !== a.name))
+                }}
+              >
+                {a.name}
+              </Chip>
             )
-          :
+            :
             <p>No Aromas Selected</p>
-        }
-      </div>
-    </Block>
-    </>    
+          }
+        </div>
+      </Block>
+    </>
   )
 }
 export default AromaInput;
