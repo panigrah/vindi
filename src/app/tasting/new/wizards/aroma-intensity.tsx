@@ -8,9 +8,6 @@ export default function AromaIntensity({ onChange }: { onChange?: (value: any) =
 
   return (
     <div>
-      <BlockTitle className="prose dark:prose-invert">
-          Aroma Intensity
-      </BlockTitle>
       <Block strong>
         <div className='prose dark:prose-invert'>
         <p>

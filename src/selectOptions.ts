@@ -59,8 +59,8 @@ export const noseIntensityOptions = [
 
 export const developmentOptions = [
     {name: "Youthful", description: "Fruity and floral from the grapes - green, citrus, stone, tropical"},
-    {name: "Developing", description: "Starting to get hints of oaky, nutty, buttery, creamy aromas"},
-    {name: "Fully Developed", description: "Fruity and floral aromas balanced with oak, nutts, coffee, toffee, caramel, chocolate, vanilla, toast, mushrooms"},
+    {name: "Developing", description: "Fruity and floral with hints of oaky, nutty, buttery, creamy aromas"},
+    {name: "Fully Developed", description: "Fruity and floral aromas balanced with oak, nuts, coffee, toffee, caramel, chocolate, vanilla, toast, mushrooms"},
     {name: "Tired, past best", description: "Dark notes overpower the fruity and floral aromas"},
 ]
 
@@ -73,28 +73,29 @@ export const sweetnessOptions = [
     {name: "Luscious", description: "Over 150g/L. This well sweeter than a can of coke. Now you are thinking sweet desserts and ice-cream"},
 ]
 
+//https://jackyblisson.com/acidity-in-wine/
 export const acidityOptions = [
-    {name: "Light"},
-    {name: "Medium-"},
-    {name: "Medium"},
-    {name: "Medium+"},
-    {name: "High"},
+    {name: "Light", description: "Described as flabby, none to little saliva production. Think of milk even water."},
+    {name: "Medium-", description: "Moderate and round - look for about as much acidity as in a black coffee or even tomato juice"},
+    {name: "Medium", description: "Described as Crisp, like a fresh squeezed lemonade, or a red apple. Its not overpoweringly acidic and generates a moderate amount of saliva."},
+    {name: "Medium+", description: "Described as Zesty. A tart green apple for example. You get a rush of saliva all over but its still enjoyable."},
+    {name: "High", description: "Sharp, jagged, tart - your mouth puckers."} ,
 ]
 
 export const tanninOptions = [
-    {name: "Light"},
-    {name: "Medium-"},
-    {name: "Medium"},
-    {name: "Medium+"},
-    {name: "High"},
+    {name: "Light", description: "No dryness sensation in the mouth after drinking"},
+    {name: "Medium-", description: "in between Light and Medium"},
+    {name: "Medium", description: "Dryness similar to that from eating walnuts, pomegranates, ripe bananas, grapes"},
+    {name: "Medium+", description: "in between Medium and High. The mouthfeel may be that of soft fur, suede, perhaps the taste of certain unripe fruits like bananas, grapes"},
+    {name: "High", description: "Chalky, abrasive, grainy and similar sensation to an over-extracted black tea, mouth puckering"},
 ]
 
 export const alcoholOptions = [
-    {name: "Light"},
-    {name: "Medium-"},
-    {name: "Medium"},
-    {name: "Medium+"},
-    {name: "High"},
+    {name: "Low", description: "< 10.5%"},
+    {name: "Medium-", description: "10.5-11.5%%"},
+    {name: "Medium", description: "12-13% - begins to be noticeable as a warming sesation at the back of your throat"},
+    {name: "Medium+", description: "13-14%"},
+    {name: "High", description: "> 14% - warming at back of throat is intense and immediately noticeable"},
 ]
 
 export const bodyOptions = [

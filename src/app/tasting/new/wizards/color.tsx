@@ -1,14 +1,14 @@
 'use client'
 import { wineColors } from '@/selectOptions'
 import { WizardComponent } from '../help-wizard'
+import { Block, Button } from 'konsta/react'
 
 //sources
 //https://www.wineswithattitude.co.uk/blog/wine-ramblings/the-colour-of-wine-and-what-it-tells-us.html
 const Color:WizardComponent = ({ onChange }) => {
   return(
-    <div className=''>
+    <Block strong>
       <div className='prose prose-slate mt-4 dark:prose-invert'>
-        <h2>Colors of Red Wine</h2>
         There are more hues of red wine or perhaps simply more distinguishable. The color comes from the grape skins that are included in the winemaking process. 
         Almost all grape varieties produce a clear juice. So the color comes from the skin when introduced into the fermentation process.
       </div>
@@ -109,7 +109,7 @@ const Color:WizardComponent = ({ onChange }) => {
           <div>Medium Body</div>
         </div>
       </div>
-    </div>
+    </Block>
   )
 }
 

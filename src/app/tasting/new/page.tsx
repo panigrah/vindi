@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from "zod"
 import { Controller, FormProvider, useController, useForm, useFormContext } from 'react-hook-form'
 import { ListItem, BlockTitle, Page, List, Navbar, Block, Actions, ActionsGroup, ActionsLabel, ActionsButton, ListInput, ListButton, Notification } from 'konsta/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAtomValue } from 'jotai'
 import { userAtom } from '@/app/atoms'
 import { useRouter } from 'next/navigation'
@@ -61,6 +61,12 @@ export default function NewTastingRoute() {
   const router = useRouter()
   const mutation = useMutationAddTasting()
 
+  useEffect(() => {
+    if(!user?.username) {
+      router.push('/user/new?redirect=/tasting/new')
+    }
+  }, [user, router])
+
   const setField = (fieldName: any, value: string) => {
     methods.setValue(fieldName, value, { shouldValidate: true, shouldDirty: true, shouldTouch: true})
     setPanelTopic(undefined)
@@ -84,9 +90,9 @@ export default function NewTastingRoute() {
   const onError = (errors:any, e:any) => console.log(errors, e);
 
   if(!user?.username) {
-    router.push('/user/new?redirect=/tasting/new')
     return <Page><Block>Checking if you are logged in</Block></Page>
   }
+
 
   return (
     <Page>
@@ -173,11 +179,21 @@ export default function NewTastingRoute() {
             options={options.sweetnessOptions} 
             label="Sweetness" 
           />
-          <SelectInput name="acidity" options={options.acidityOptions} label="Acidity" />
-          <SelectInput name="tannin" options={options.tanninOptions} label="Tannin" />
-          <SelectInput name="alcohol" options={options.alcoholOptions} label="Alcohol" />
-          <SelectInput name="body" options={options.bodyOptions} label="Body" />
-          <SelectInput name="flavorIntensity" options={options.flavorIntensityOptions} label="Flavor Intensity" />
+          <SelectInput 
+            openHelp={setPanelTopic}
+            name="acidity" options={options.acidityOptions} label="Acidity" />
+          <SelectInput 
+            openHelp={setPanelTopic}
+            name="tannin" options={options.tanninOptions} label="Tannin" />
+          <SelectInput 
+            openHelp={setPanelTopic}
+            name="alcohol" options={options.alcoholOptions} label="Alcohol" />
+          <SelectInput 
+            openHelp={setPanelTopic}
+            name="body" options={options.bodyOptions} label="Body" />
+          <SelectInput 
+            openHelp={setPanelTopic}
+            name="flavorIntensity" options={options.flavorIntensityOptions} label="Flavor Intensity" />
           <ListInput 
             label="Flavor Characteristics"
             type="textarea"
@@ -191,7 +207,9 @@ export default function NewTastingRoute() {
             inputClassName="!h-20 resize-none"
             {...methods.register('otherCharacteristics')}
           />
-          <SelectInput name="finish" options={options.finishOptions} label="Finish" />
+          <SelectInput 
+            openHelp={setPanelTopic}
+            name="finish" options={options.finishOptions} label="Finish" />
         </List>
 
         <BlockTitle>Conclusions</BlockTitle>

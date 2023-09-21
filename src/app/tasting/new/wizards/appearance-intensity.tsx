@@ -4,9 +4,6 @@ import { Button, Block, BlockTitle } from 'konsta/react'
 export default function AppearanceIntensity({ onChange }: {onChange?: (value: any) => void }) {
   return(
     <div>
-      <BlockTitle className="prose dark:prose-invert">
-          Appearance Intensity
-      </BlockTitle>
       <Block strong>
         <div className="grid grid-cols-1">
           {/* eslint-disable-next-line @next/next/no-img-element */}

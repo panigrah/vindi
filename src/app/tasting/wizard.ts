@@ -1,5 +1,6 @@
 /*
 https://quizlet.com/87235063/wset-level-3-chapter-7-9-flash-cards/
+https://www.goodpairdays.com/guides/wine-tasting/main-characteristics/
 
 
 colors: https://winefolly.com/tips/wine-color-chart/

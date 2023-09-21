@@ -14,10 +14,6 @@ export default function Sweetness({ onChange }: { onChange?: (value: any) => voi
   const [selected, setSelected] = useState<string>()
   
   return (
-    <div>
-      <BlockTitle className="prose dark:prose-invert">
-        Sweetness
-      </BlockTitle>
       <Block strong>
         <div className='prose dark:prose-invert'>
           <p>
@@ -53,6 +49,5 @@ export default function Sweetness({ onChange }: { onChange?: (value: any) => voi
           </p>
         </div>
       </Block>
-    </div>
   )
 }

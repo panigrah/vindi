@@ -4,10 +4,6 @@ import { useState } from 'react'
 
 export default function AromaDescriptors({ onChange }: { onChange?: (value: any) => void }) {
   return (
-    <div>
-      <BlockTitle className="prose dark:prose-invert">
-          Aroma Descriptors
-      </BlockTitle>
       <Block strong>
         <div className='prose dark:prose-invert'>
           <p>
@@ -22,6 +18,5 @@ export default function AromaDescriptors({ onChange }: { onChange?: (value: any)
           </p>
         </div>
       </Block>
-    </div>
   )
 }

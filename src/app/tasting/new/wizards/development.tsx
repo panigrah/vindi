@@ -14,10 +14,6 @@ export default function Development({ onChange }: { onChange?: (value: any) => v
   const [selected, setSelected] = useState<string>()
   
   return (
-    <div>
-      <BlockTitle className="prose dark:prose-invert">
-          Development
-      </BlockTitle>
       <Block strong>
         <div className='prose dark:prose-invert'>
           <p>
@@ -60,6 +56,5 @@ export default function Development({ onChange }: { onChange?: (value: any) => v
           </p>
         </div>
       </Block>
-    </div>
   )
 }

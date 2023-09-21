@@ -8,6 +8,9 @@ import Condition from './wizards/condition';
 import Development from './wizards/development';
 import AromaDescriptors from './wizards/aroma-descriptors';
 import Sweetness from './wizards/sweetness';
+import Acidity from './wizards/acidity';
+import Tannin from './wizards/tannin';
+import Alcohol from './wizards/alcohol';
 
 export type WizardComponent = React.FC<{onChange?: (value: any) => void}>
 
@@ -23,7 +26,10 @@ const WizardList:WizardsType = {
   condition: { Component: Condition, title: 'Nose Condition' },
   development: { Component: Development, title: 'Development' },
   aromaDescriptors: { Component: AromaDescriptors, title: 'Aroma Descriptors' },
-  sweetness: { Component: Sweetness, title: 'Sweetness' }
+  sweetness: { Component: Sweetness, title: 'Sweetness' },
+  acidity: { Component: Acidity, title: 'Acidity' },
+  tannin: { Component: Tannin, title: 'Tannin' },
+  alcohol: { Component: Alcohol, title: 'Alcohol Content' }
 }
 
 export function HelpWizard({ topic, title, update, onClose }: { topic?: string; title?: string; update?: any; onClose: () => void; }) {
@@ -34,6 +40,7 @@ export function HelpWizard({ topic, title, update, onClose }: { topic?: string; 
       side="left"
       opened={!!topic}
       onBackdropClick={() => onClose()}
+      size='w-screen h-screen max-w-md'
     >
       <Page>
         <Navbar
@@ -41,9 +48,7 @@ export function HelpWizard({ topic, title, update, onClose }: { topic?: string; 
           right={<ConstaLink navbar onClick={() => onClose()}>
             Close
           </ConstaLink>} />
-        <Block>
-          {Wizard?.Component && <Wizard.Component onChange={(v) => update(topic, v)} />}
-        </Block>
+        {Wizard?.Component && <Wizard.Component onChange={(v) => update(topic, v)} />}
       </Page>
     </Panel>
   );
