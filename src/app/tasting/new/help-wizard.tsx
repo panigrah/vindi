@@ -11,6 +11,7 @@ import Sweetness from './wizards/sweetness';
 import Acidity from './wizards/acidity';
 import Tannin from './wizards/tannin';
 import Alcohol from './wizards/alcohol';
+import WorkInProgress from './wizards/template';
 
 export type WizardComponent = React.FC<{onChange?: (value: any) => void}>
 
@@ -33,7 +34,7 @@ const WizardList:WizardsType = {
 }
 
 export function HelpWizard({ topic, title, update, onClose }: { topic?: string; title?: string; update?: any; onClose: () => void; }) {
-  const Wizard = topic? WizardList[topic] : null;
+  const Wizard = topic? WizardList[topic] : null
 
   return (
     <Panel
@@ -48,7 +49,11 @@ export function HelpWizard({ topic, title, update, onClose }: { topic?: string; 
           right={<ConstaLink navbar onClick={() => onClose()}>
             Close
           </ConstaLink>} />
-        {Wizard?.Component && <Wizard.Component onChange={(v) => update(topic, v)} />}
+        {Wizard?.Component ? 
+          <Wizard.Component onChange={(v) => update(topic, v)} />
+        :
+          <WorkInProgress />
+        }
       </Page>
     </Panel>
   );
