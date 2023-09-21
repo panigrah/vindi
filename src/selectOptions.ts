@@ -99,19 +99,19 @@ export const alcoholOptions = [
 ]
 
 export const bodyOptions = [
-    {name: "Light"},
-    {name: "Medium-"},
-    {name: "Medium"},
-    {name: "Medium+"},
-    {name: "Full"},
+    {name: "Light", description: "Feels like water in your mouth; just a water with artificial flavoring. Has the texture of skimmed milk. The wine does not coat the insides of your mouth if you swirl it."},
+    {name: "Medium-", description: "Between Light and Medium"},
+    {name: "Medium", description: "In the middle; with the texture of a semi-skimmed milk, there is some coating left in your mouth."},
+    {name: "Medium+", description: "Between Medium and Full"},
+    {name: "Full", description: "Feel like a juice with pulp, or a full fat milk with a lot of things going on and a bite to it. You can almost chew it. A full-bodied wine will coat your mouth and move around your mouth slowly. It will feel thicker and heavier."},
 ]
 
 export const flavorIntensityOptions = [
-    {name: "Light"},
-    {name: "Medium-"},
-    {name: "Medium"},
-    {name: "Medium+"},
-    {name: "Pronounced"},
+    {name: "Light", description: "Flavors are faint and difficult to capture. It takes time for the flavors to appear in your mouth."},
+    {name: "Medium-", description: "You can taste flavors but identifying the flavors is difficult because they are faint or the flavors are easily identified as simple flavors"},
+    {name: "Medium", description: "In between Light and Pronounced"},
+    {name: "Medium+", description: "Flavors are prominent in your mouth, but easily identifiable and not very complex."},
+    {name: "Pronounced", description: "Flavors are strong and concentrated. You only need a little bit of wine to get the flavors appear in your mouth. Flavors are complex - but identifiable."},
 ]
 
 export const finishOptions = [

@@ -12,6 +12,8 @@ import Acidity from './wizards/acidity';
 import Tannin from './wizards/tannin';
 import Alcohol from './wizards/alcohol';
 import WorkInProgress from './wizards/template';
+import WineBody from './wizards/body';
+import FlavorIntensity from './wizards/flavor-intensity';
 
 export type WizardComponent = React.FC<{onChange?: (value: any) => void}>
 
@@ -30,7 +32,9 @@ const WizardList:WizardsType = {
   sweetness: { Component: Sweetness, title: 'Sweetness' },
   acidity: { Component: Acidity, title: 'Acidity' },
   tannin: { Component: Tannin, title: 'Tannin' },
-  alcohol: { Component: Alcohol, title: 'Alcohol Content' }
+  alcohol: { Component: Alcohol, title: 'Alcohol Content' },
+  body: { Component: WineBody, title: 'Body' },
+  flavorIntensity: { Component: FlavorIntensity, title: 'Flavor Intensity'}
 }
 
 export function HelpWizard({ topic, title, update, onClose }: { topic?: string; title?: string; update?: any; onClose: () => void; }) {
