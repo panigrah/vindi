@@ -215,7 +215,10 @@ export default function NewTastingRoute() {
         <BlockTitle>Conclusions</BlockTitle>
         <List strongIos insetIos >
           <SelectInput name="quality" options={options.qualityLevelOptions} label="Quality Level" />
-          <SelectInput name="readiness" options={options.readinessOptions} label="Readiness" />
+          <SelectInput 
+            openHelp={setPanelTopic}
+            name="readiness" options={options.readinessOptions} label="Readiness" 
+          />
           <ListButton onClick={methods.handleSubmit(onSubmit, onError)}>Save</ListButton>
         </List>
       </FormProvider>
