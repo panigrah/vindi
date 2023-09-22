@@ -13,6 +13,7 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import ImageUpload from '../image-upload'
+import { Loader } from '@/app/tasting/new/Loader'
 
 const schema = z.object({
   name: z.string(),
@@ -71,7 +72,7 @@ export default function NewWinePage() {
 
   if(!user?.username) {
     router.push('/user/new?redirect=/wine/new')
-    return <Page><Block>Checking if you are logged in</Block></Page>
+    return <Loader message={'Logging you in'} />
   }
 
   return (

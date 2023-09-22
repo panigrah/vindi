@@ -49,6 +49,7 @@ export default function TastingDetail({ tasting }: { tasting: TastingType }) {
         <Navbar 
           left={<Link href="/tasting"><ChevronLeftIcon className="w-5 h-5" /></Link>} 
           title={tasting.wine?.name} 
+          titleClassName="truncate max-w-[240px]"
           right={<Button onClick={deleteTasting}><TrashIcon className="w-5 h-5"/></Button>}
         />
         <List inset strong outline>

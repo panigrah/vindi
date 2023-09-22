@@ -3,7 +3,7 @@
 import * as options from '@/selectOptions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from "zod"
-import { Controller, FormProvider, useController, useForm, useFormContext } from 'react-hook-form'
+import {  Controller, FormProvider, useController, useForm, useFormContext } from 'react-hook-form'
 import { ListItem, BlockTitle, Page, List, Navbar, Block, Actions, ActionsGroup, ActionsLabel, ActionsButton, ListInput, ListButton, Notification } from 'konsta/react'
 import { useEffect, useState } from 'react'
 import { useAtomValue } from 'jotai'
@@ -16,6 +16,7 @@ import AromaInput from './aroma-input'
 import { SelectInput } from './SelectInput'
 import { SelectWine } from './SelectWine'
 import { HelpWizard } from './help-wizard'
+import { Loader } from './Loader'
 
 const schema = z.object({
   wine: z.object({ id: z.string() }),
@@ -109,7 +110,7 @@ export default function NewTastingRoute() {
   const onError = (errors:any, e:any) => console.log(errors, e);
 
   if(!user?.username) {
-    return <Page><Block>Checking if you are logged in</Block></Page>
+    return (<Loader message={"Logging you in"} />)
   }
 
 
