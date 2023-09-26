@@ -7,6 +7,8 @@ import { Button, Block, BlockTitle, List, ListItem, Chip } from 'konsta/react'
 import * as d3 from 'd3'
 import { useController } from 'react-hook-form';
 import { ArrowLeftIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
+import { useDrag } from '@use-gesture/react'
+import { animated, easings, useSpring } from '@react-spring/web'
 
 /*
 type EntryType = {
@@ -101,7 +103,7 @@ const Arc = ({ arcData, onSelect, selected = false }: { arcData: any, onSelect: 
         d={d}
         className={selected ? 'stroke-white dark:stroke-black' : ''}
         strokeWidth={4}
-        onClick={() => onSelect()}
+        
       />
       {d2 &&
         <path
@@ -122,8 +124,24 @@ type AromaType = {
 const AromaInput = ({ name, label, openHelp }: { name: string, label: string, openHelp?: (topic: string) => void; }) => {
   const { field, fieldState, formState } = useController({ name })
   const [family, setFamily] = useState('root')
-  const [percentVisible, setPercentVisible] = useState(0)
+  const [percentVisible, setPercentVisible] = useState(2)
   const [selected, setSelected] = useState('')
+  const [angle, setAngle] = useState(0)
+  const [styles, api] = useSpring(() => ({
+    rotate: 0,
+    config: {
+      //mass: 1,
+      friction: 14,
+      tension: 120,
+      easing: easings.steps(50, 'start'),
+    }
+  }))
+
+  const bind = useDrag(({ down, direction, velocity}) => {
+    api.start({rotate: angle + direction[1] * velocity[1] * 5})
+    setAngle(angle + direction[1] * velocity[1] * 5 )
+  })
+
   //const [aromas, setAromas] = useState<AromaType[]>([])
   const pie = d3.pie().startAngle(0).endAngle(percentVisible * Math.PI)
 
@@ -132,7 +150,6 @@ const AromaInput = ({ name, label, openHelp }: { name: string, label: string, op
     field.onChange(values)
   }
   const aromaDictionary = useMemo(() => aromaList(), [])
-  //console.log(aromaDictionary)
   const data = useMemo(() =>
     aromaDictionary
       .filter(a => a.family === family)
@@ -146,6 +163,7 @@ const AromaInput = ({ name, label, openHelp }: { name: string, label: string, op
     , [family, aromaDictionary])
 
   useEffect(() => {
+    /*
     d3.selection()
       .transition('pie-reveal')
       .duration(3000)
@@ -154,6 +172,7 @@ const AromaInput = ({ name, label, openHelp }: { name: string, label: string, op
         const percentInterpolate = d3.interpolate(0, 100)
         return t => setPercentVisible(percentInterpolate(t))
       })
+    */
   }, [data])
 
   const parent = aromaDictionary.find(f => f.name === family)?.family
@@ -199,8 +218,10 @@ const AromaInput = ({ name, label, openHelp }: { name: string, label: string, op
               </Button>
             </div>
           </div>
+          <div className='flex-auto' {...bind()}>
           <svg className='w-full aspect-square mx-auto mt-4' viewBox='0 0 300 300'>
-            <g className='translate-x-[50%] translate-y-[50%]'>
+            <g className='translate-x-[0%] translate-y-[50%]'>
+              <animated.g style={styles}>
               {pie(data).map((d, index) => {
                 return <Arc
                   arcData={{ ...d }}
@@ -233,8 +254,10 @@ const AromaInput = ({ name, label, openHelp }: { name: string, label: string, op
                   </g>
                 )
               })}
+            </animated.g>
             </g>
           </svg>
+          </div>
         </div>
         <div className='border-t pt-2 -mx-4 px-4'>
           {aromas.length ?
