@@ -44,7 +44,7 @@ export default function WineTrackerPage() {
     setQ(e.target.value)
   }
 
-  console.log(results.data?.length, results.isFetching, q)
+  //console.log(results.data?.length, results.isFetching, q)
   return(
     <Page>
       <BlockTitle>Feel lucky?</BlockTitle>
