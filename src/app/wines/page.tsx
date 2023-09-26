@@ -2,21 +2,43 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { Page, Card, BlockTitle, ListItem, Preloader, ListInput, List, Block} from 'konsta/react'
-import { useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce'
 
 export default function WineTrackerPage() {
-  const [q, setQ] = useState('')
+  const searchParams = useSearchParams()
+  const keywords = searchParams.get('q') || ''
+  const [q, setQ] = useState(keywords)
   const [value] = useDebounce(q, 1000);
 
+  const router = useRouter()
+  const pathname = usePathname()
+  
   const results = useQuery({ 
-    queryKey: ['wine', 'search', q],
+    queryKey: ['wine', 'search', keywords],
     queryFn: () => {
-      const result = fetch(`/api/wine/search?q=${value}`).then( res => res.json() )
+      const result = fetch(`/api/wine/search?q=${keywords}`).then( res => res.json() )
       return result;
     },
-    enabled: !!value
+    enabled: !!keywords
   })
+
+  const setQueryParam = useCallback((key: string, value: string) => {
+    let qs = new URLSearchParams()
+    searchParams.forEach((v, k) => {
+      if( k !== key ) {
+        qs.append(k, v)
+      }
+    })
+    qs.append(key, value)
+    //console.log(qs.toString())
+    router.push(pathname + '?' + qs.toString())
+  }, [pathname, router, searchParams])
+
+  useEffect(() => {
+    setQueryParam('q', value)
+  }, [value, setQueryParam])
 
   const onSearch = (e:any) => {
     setQ(e.target.value)
