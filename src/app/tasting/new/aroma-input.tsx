@@ -218,7 +218,7 @@ const AromaInput = ({ name, label, openHelp }: { name: string, label: string, op
               </Button>
             </div>
           </div>
-          <div className='flex-auto' {...bind()}>
+          <div className='flex-auto touch-none' {...bind()}>
           <svg className='w-full aspect-square mx-auto mt-4' viewBox='0 0 300 300'>
             <g className='translate-x-[0%] translate-y-[50%]'>
               <animated.g style={styles}>
