@@ -26,7 +26,7 @@ model Wine {
   addedBy String?
   images Media[]
   userId  String
-  user  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user  User @relation(fields: [userId], references: [id], onDelete: NoAction)
 }
 
 model User {
@@ -37,6 +37,7 @@ model User {
   passwordHash String
   tastings  Tasting[]
   wines Wine[]
+  requests Retailer[]
 }
 
 model Tasting {
@@ -95,4 +96,18 @@ type Media {
   original_filename String
   bytes Int
   asset_id String
+}
+
+model Retailer {
+  id  String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  url String
+  frequency String @default("weekly on sunday")
+  lastChecked DateTime?
+  status String @default("unchecked")
+  requesterId  String?
+  requester  User? @relation(fields: [requesterId], references: [id], onDelete: NoAction)
+  requestedDate DateTime?
+  notes DateTime?
+  votes Int @default(0)
 }

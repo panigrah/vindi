@@ -1,7 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import { ListBulletIcon, ShoppingBagIcon } from '@heroicons/react/24/solid';
 import { useQuery } from '@tanstack/react-query';
-import { Page, Card, BlockTitle, ListItem, Preloader, ListInput, List, Block} from 'konsta/react'
+import { Page, Card, Navbar, BlockTitle, ListItem, Searchbar, Preloader, ListInput, List, Block} from 'konsta/react'
+import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce'
@@ -47,32 +50,41 @@ export default function WineTrackerPage() {
   //console.log(results.data?.length, results.isFetching, q)
   return(
     <Page>
-      <BlockTitle>Feel lucky?</BlockTitle>
-      <List>
-        <ListInput 
-          onChange={onSearch} 
-          placeholder='Search for a wine'
-          outline={true}
-          value={q}
+       <Navbar 
+          title='Search for a Wine'
+          right={<Link href='/wines/tracker'>
+            <ShoppingBagIcon className='w-5 h-5' />
+          </Link>}
         />
-      </List> 
+      <BlockTitle>Feel lucky?</BlockTitle>
+      <Block strong inset>
+          <Searchbar 
+            outline 
+            onChange={onSearch} 
+            placeholder='Search for a wine'
+            value={q}
+          />
+        </Block>
+     
+      <BlockTitle>Results</BlockTitle>
       { results.isFetching && <div className='flex flex-auto h-full'><Preloader className='mx-auto mt-20' /></div> }
-      { (!results.isFetching && !results.data?.length) && (
+      { (!results.isFetching && !results.data?.length)? 
+        (
           q?
-            <Block inset>
+            <Block strong inset>
               No results found
             </Block>
           :
-            <Block inset>
+            <Block strong inset>
               Enter something into the search box
             </Block>
         )
+        :
+        null
       }
-      {results.data?.length &&
-        <>
-          <BlockTitle>Results</BlockTitle>
-          <List outline>
-            {results.data?.map( (r:any) => {
+      {results.data?.length ?
+          <List strong inset outline>
+            {results.data.map( (r:any) => {
               return <ListItem 
                 key={r.id} 
                 href={r.url}
@@ -98,7 +110,7 @@ export default function WineTrackerPage() {
               />
             })}
           </List>
-        </>
+        : null
       }
     </Page>
   )
